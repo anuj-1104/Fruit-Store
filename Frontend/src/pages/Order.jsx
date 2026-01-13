@@ -80,15 +80,15 @@ const Order = () => {
 
   return (
     <div className="orders-container bg-black text-white h-120">
-      <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
+      {/* <ToastContainer position="bottom-right" theme="dark" autoClose={2000} /> */}
       <div className="p-4">
         <h2>Recent Orders (Total: {order.count})</h2>
         {order.orders.map((orderItem, index) => (
           <div
             key={orderItem.created_At || index}
-            className="order-card p-2 grid grid-cols-2 bg-black m-2 overflow-auto rounded-2xl border border-white hover:-translate-1 duration-400 hover:bg-linear-to-r from-blue-600 to-blue-900 "
+            className="order-card p-2  grid grid-cols-1 md:grid-cols-2  md:auto-cols-auto bg-blue-900  m-2 overflow-auto rounded-2xl border border-white hover:-translate-1 duration-400 hover:bg-linear-to-r from-blue-600 to-blue-900 "
           >
-            <div className="order-header p-2 bg-black/20 rounded-2xl m-0 ">
+            <div className="order-header p-2 bg-black/20 rounded-2xl m-1 ">
               <p className="bg-black/30 p-1 m-1 rounded-2xl">
                 Order ID: {orderItem?._id ?? " "}
               </p>
@@ -99,12 +99,18 @@ const Order = () => {
                 Date: {new Date(orderItem.created_At).toLocaleString()}
               </p>
             </div>
-            <ul className="items-list bg-black/50 m-3 rounded-2xl p-3 grid-cols-2">
+            <ul className="items-list bg-black/20  rounded-2xl p-2 m-0 grid-cols-2 ">
               {orderItem.p_items?.map((item, i) => (
-                <li key={item.p_id || i} className="order-item  p-1 ">
+                <li
+                  key={item.p_id || i}
+                  className="order-item  p-1 grid grid-cols-3 "
+                >
+                  <img
+                    className="w-30  bg-black/30 rounded-2xl"
+                    src={item?.image_url}
+                    alt={item?.p_name}
+                  />
                   <span>{item.p_name}</span>
-                  <br />
-                  <br />
                   {item.p_offerprice && item.p_offerprice < item.p_price && (
                     <span className="offer-price">
                       Price: ₹{item.p_offerprice}

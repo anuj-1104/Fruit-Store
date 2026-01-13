@@ -1,20 +1,27 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "../api/axios";
 
 const Cart_page = () => {
-  //   useEffect(() => {
-  //     const handllerCart = async () => {
-  //       try {
-  //         const res = axios.get("");
-  //       } catch (error) {
-  //         toast.success("Not Found..");
-  //         console.log(error);
-  //       }
-  //     };
-
-  //     handllerCart();
-  //   }, []);
+  const [items, setItems] = useState([]);
+  const cart_items = JSON.parse(localStorage.getItem("Cart_count") || []);
+  console.log(cart_items[0]);
+  useEffect(() => {
+    const handllerCart = async () => {
+      try {
+        const res = await axios.post(`/product/findproduct`, {
+          p_id: cart_items,
+        });
+        console.log(res);
+      } catch (error) {
+        toast.success("Not Found..");
+        console.log(error);
+      }
+    };
+    if (cart_items.length > 0) {
+      handllerCart();
+    }
+  }, [cart_items]);
 
   return (
     <div>

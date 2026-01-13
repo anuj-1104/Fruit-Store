@@ -32,8 +32,11 @@ const BuyProduct = () => {
   };
 
   //handle a count function to add cart count
-  const handleCart = () => {
-    if (!id) return;
+  const handleCart = (id) => {
+    if (!id) {
+      toast.error("Id not found..");
+      return;
+    }
     addToCart(id);
   };
 
@@ -178,7 +181,10 @@ const BuyProduct = () => {
                   </button>
                   <button
                     type="button"
-                    onClick={handleCart}
+                    value={id}
+                    onClick={() => {
+                      handleCart(id);
+                    }}
                     className="w-full px-4 py-2.5 cursor-pointer outline-none border border-blue-600 bg-transparent hover:bg-blue-600 duration-400 text-white text-sm font-medium rounded-sm"
                   >
                     Add to cart

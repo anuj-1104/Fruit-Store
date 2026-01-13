@@ -2,6 +2,7 @@ from models.Product import Product, ResponseProduct, OrderCreateSchema,Ordernew
 from fastapi import APIRouter, HTTPException, Depends,File,UploadFile ,Form              #used for the other depend a value
 from utils.jwt_helper import get_current_user
 from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 from fastapi import status
 from database.Connection import db,users,products,purchases
 from datetime import datetime
@@ -10,7 +11,7 @@ import os
 import requests
 from dotenv import load_dotenv
 from pathlib import Path       #used for the file path
-from typing import Any
+from typing import Any,List
 
 load_dotenv()
 IMAGE_URL=os.getenv("IMAGE_URL")
@@ -162,13 +163,17 @@ async def delete_product(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Internal Server Error:{e}")
 
+class ProductRequest(BaseModel):
+    p_id:List[str]
 
-@product_router.post("/findproduct/{p_id}", status_code=200,response_model=ResponseProduct)
-async def find_product(p_id:str):
+@product_router.post("/findproduct", status_code=200,response_model=ResponseProduct)
+async def find_product(request:ProductRequest):
 
     try:
-        
-        product_id = db.products.find_one({"_id":ObjectId(p_id)})
+       
+        pro_id=request.p_id[0]      #used a list to one at a time find a product
+        print(f"new id :{pro_id}")
+        product_id = db.products.find_one({"_id":ObjectId(pro_id)})
 
         if not product_id:
             raise HTTPException(status_code=404, detail="Product not Found")
@@ -184,7 +189,11 @@ async def find_product(p_id:str):
         )
     
     except Exception as e:
+        print(str(e))
         raise HTTPException(status_code=500, detail=f"server Error {str(e)}")
+    
+
+
 
 @product_router.post("/feedback",status_code=200)
 async def feedback_form(current_user:dict=Depends(get_current_user)):

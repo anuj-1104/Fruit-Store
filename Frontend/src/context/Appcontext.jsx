@@ -79,10 +79,10 @@ export const AuthProvider = ({ children }) => {
   };
 
   const addToCart = (productId) => {
+    toast.success("Add Successfully..");
     setTotalCount(
       (prev) => (prev.includes(productId) ? prev : [...prev, productId]) //not a id in cart to add new id
     );
-    toast.success("Added to cart!");
   };
 
   const forgetpassword = async (formdata) => {

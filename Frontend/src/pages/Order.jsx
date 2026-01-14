@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
-import { toast, ToastContainer } from "react-toastify";
 import { useAppContext } from "../context/Appcontext";
+import { toast } from "react-toastify";
 
 const Order = () => {
   const { token } = useAppContext();
@@ -80,7 +80,6 @@ const Order = () => {
 
   return (
     <div className="orders-container bg-black text-white h-120">
-      {/* <ToastContainer position="bottom-right" theme="dark" autoClose={2000} /> */}
       <div className="p-4">
         <h2>Recent Orders (Total: {order.count})</h2>
         {order.orders.map((orderItem, index) => (

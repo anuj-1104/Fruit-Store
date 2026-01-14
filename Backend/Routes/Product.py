@@ -166,14 +166,14 @@ async def delete_product(
 class ProductRequest(BaseModel):
     p_id:List[str]
 
-@product_router.post("/findproduct", status_code=200,response_model=ResponseProduct)
-async def find_product(request:ProductRequest):
+@product_router.post("/findproduct/{p_id}", status_code=200,response_model=ResponseProduct)
+async def find_product(p_id:str):
 
     try:
        
-        pro_id=request.p_id[0]      #used a list to one at a time find a product
-        print(f"new id :{pro_id}")
-        product_id = db.products.find_one({"_id":ObjectId(pro_id)})
+        # pro_id=request.p_id[0]      #used a list to one at a time find a product
+        # print(f"new id :{pro_id}")
+        product_id = db.products.find_one({"_id":ObjectId(p_id)})
 
         if not product_id:
             raise HTTPException(status_code=404, detail="Product not Found")

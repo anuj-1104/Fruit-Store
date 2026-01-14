@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { toast, ToastContainer } from "react-toastify";
 import { useAppContext } from "../context/Appcontext";
 import axios from "../api/axios";
 
@@ -44,7 +43,7 @@ const Feedback = () => {
 
   return (
     <div className=" bg-black flex items-center justify-center p-2 ">
-      <ToastContainer theme="black" position="bottom-right" autoClose={2000} />
+      {/* <ToastContainer theme="black" position="bottom-right" autoClose={2000} /> */}
       <div className="w-full max-w-md">
         <form
           onSubmit={handleSubmit}

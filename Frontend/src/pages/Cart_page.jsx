@@ -9,10 +9,13 @@ const Cart_page = () => {
   useEffect(() => {
     const handllerCart = async () => {
       try {
-        const res = await axios.post(`/product/findproduct`, {
+        const res = await axios.post(`/product/findproduct/${cart_items[0]}`, {
           p_id: cart_items,
         });
-        console.log(res);
+
+        if (res.request?.status === 200) {
+          toast.success("All order find");
+        }
       } catch (error) {
         toast.success("Not Found..");
         console.log(error);

@@ -21,7 +21,7 @@ const BuyProduct = () => {
     date: "",
     cvv_no: "",
   });
-  const { addToCart } = useAppContext();
+  const { addToCart, removeToCart } = useAppContext();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -45,15 +45,16 @@ const BuyProduct = () => {
       if (!id) return;
 
       try {
-        const response = await axios.post(`/product/findproduct/${id}`);
+        const response = await axios.post(`/product/findproduct`, {
+          p_id: [id],
+        });
+        // console.log(response.data[0]);
         if (response.request.status == 200) {
-          setProduct(response.data);
+          setProduct(response.data[0]);
         }
       } catch (error) {
         console.log("Error fetching product : ", error);
         toast.error(error.message);
-      } finally {
-        console.log("Success");
       }
     };
     fetchProduct();

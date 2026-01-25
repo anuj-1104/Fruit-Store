@@ -13,8 +13,10 @@ export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [data, setData] = useState([]);
   const [error, setError] = useState(null);
-  const [total_count, setTotalCount] = useState([]);
+  const [total_count, setTotalCount] = useState({});
   const [loading, setLoading] = useState(true);
+
+  // console.log(total_count.len);/
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -39,8 +41,16 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
+    const savedCart = localStorage.getItem("cartItems");
+    if (savedCart) {
+      setTotalCount(JSON.parse(savedCart));
+    }
+  }, []);
+
+  //any refresh the page to set the data in parmentnt in the local storage
+  useEffect(() => {
     if (total_count.length > 0) {
-      localStorage.setItem("Cart_count", JSON.stringify(total_count)); //convert a json type data
+      localStorage.setItem("cartItems", JSON.stringify(total_count)); //convert a json type data
     }
   }, [total_count]);
 
@@ -78,11 +88,30 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(total_count));
+  }, [total_count]);
+
   const addToCart = (productId) => {
-    toast.success("Add Successfully..");
-    setTotalCount(
-      (prev) => (prev.includes(productId) ? prev : [...prev, productId]), //not a id in cart to add new id
-    );
+    toast.success("Added Successfully..");
+    const updatedCart = { ...total_count };
+    updatedCart[productId] = (updatedCart[productId] || 0) + 1;
+    setTotalCount(updatedCart);
+    toast.success("Added to Cart");
+  };
+
+  const removeToCart = (productId) => {
+    // console.log(productId);
+    toast.error("Quantity Decreased"); // Fixed toast message
+    const updatecart = { ...total_count };
+    if (updatecart[productId]) {
+      updatecart[productId] -= 1;
+
+      if (updatecart[productId] <= 0) {
+        delete updatecart[productId];
+      }
+    }
+    setTotalCount(updatecart);
   };
 
   const forgetpassword = async (formdata) => {
@@ -121,14 +150,13 @@ export const AuthProvider = ({ children }) => {
   //registration user
   const registration_user = async (userdata) => {
     try {
-      // console.log(userdata);
       const response = axios.post("/user/user", {
         email: userdata.email,
         password: userdata.password,
         name: userdata.name,
         phone: userdata.phone,
       });
-      
+
       if (response.request.status == 200) {
         console.log("user Registration Successfully..");
         // console.log(response);
@@ -142,7 +170,6 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     if (!localStorage.getItem("token")) return;
-    console.log("find Product");
     const fetchProducts = async () => {
       setLoading(true); // start loading
 
@@ -178,6 +205,7 @@ export const AuthProvider = ({ children }) => {
     navigate,
     forgetpassword,
     setTotalCount,
+    removeToCart,
     addToCart,
     total_count,
   };

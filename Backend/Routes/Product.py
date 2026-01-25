@@ -166,27 +166,36 @@ async def delete_product(
 class ProductRequest(BaseModel):
     p_id:List[str]
 
-@product_router.post("/findproduct/{p_id}", status_code=200,response_model=ResponseProduct)
-async def find_product(p_id:str):
+@product_router.post("/findproduct", status_code=200,response_model=List[ResponseProduct])
+async def find_product(data:ProductRequest):
 
     try:
-       
-        # pro_id=request.p_id[0]      #used a list to one at a time find a product
-        # print(f"new id :{pro_id}")
-        product_id = db.products.find_one({"_id":ObjectId(p_id)})
+
+        p_ids=data.p_id
+        
+        object_ids = [ObjectId(id) for id in p_ids]
+        print(object_ids)
+        product_id = list(db.products.find({"_id":{"$in":object_ids}}))
+
+        # print(product_id[0])     
+        #fined the id for the all data are responsed the front end .saturday
 
         if not product_id:
             raise HTTPException(status_code=404, detail="Product not Found")
+
         
-        return ResponseProduct(
-            p_id=str(product_id["_id"]),       #Pass a product id 
-            p_name=product_id["p_name"],
-            p_qty=product_id["p_qty"],
-            p_price=product_id["p_price"],
-            p_offerprice=product_id["p_offerprice"],
-            image_url=product_id.get("p_image"),
-            description=product_id.get("description")
+        
+        return [ResponseProduct(
+            p_id=str(p["_id"]),       #Pass a product id 
+            p_name=p["p_name"],
+            p_qty=p["p_qty"],
+            p_price=p["p_price"],
+            p_offerprice=p["p_offerprice"],
+            image_url=p["p_image"],
+            description=p["description"]
         )
+        for p in product_id
+        ]
     
     except Exception as e:
         print(str(e))

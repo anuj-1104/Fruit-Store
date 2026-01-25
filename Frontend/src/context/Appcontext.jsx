@@ -1,7 +1,7 @@
 // AuthContext.jsx
 import { createContext, useContext, useEffect, useState } from "react";
 import axios from "../api/axios";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
@@ -45,19 +45,19 @@ export const AuthProvider = ({ children }) => {
   }, [total_count]);
 
   const loginUser = async (userData) => {
-    console.log(userData);
+    // console.log(userData);
     try {
       const response = await axios.post("/user/login", {
         email: userData.email,
         password: userData.password,
       });
 
-      console.log(response.data.user);
+      // console.log(response.data.user);
       if (response.request.status === 200) {
         const token = response.data.access_token;
         const jsonData = JSON.stringify(response.data.user);
 
-        console.log(jsonData);
+        // console.log(jsonData);
 
         // Save token
         localStorage.setItem("token", token);
@@ -81,7 +81,7 @@ export const AuthProvider = ({ children }) => {
   const addToCart = (productId) => {
     toast.success("Add Successfully..");
     setTotalCount(
-      (prev) => (prev.includes(productId) ? prev : [...prev, productId]) //not a id in cart to add new id
+      (prev) => (prev.includes(productId) ? prev : [...prev, productId]), //not a id in cart to add new id
     );
   };
 
@@ -109,6 +109,7 @@ export const AuthProvider = ({ children }) => {
   const Logout = async () => {
     try {
       localStorage.clear(); //clear a localstorage
+      localStorage.removeItem("UserData");
       console.log("Logout Successfully ");
       window.location.href = "/"; //directly redict used browser
       setUser(null);
@@ -127,7 +128,7 @@ export const AuthProvider = ({ children }) => {
         name: userdata.name,
         phone: userdata.phone,
       });
-
+      
       if (response.request.status == 200) {
         console.log("user Registration Successfully..");
         // console.log(response);

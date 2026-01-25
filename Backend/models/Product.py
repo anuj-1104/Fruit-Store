@@ -6,6 +6,7 @@ from typing import Optional, List
 
 app = FastAPI()
 
+#used of the pydentic library
 # ---------------- Product Model ----------------
 class Product(BaseModel):
     p_id: int

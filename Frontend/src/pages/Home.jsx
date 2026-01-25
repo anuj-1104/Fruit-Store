@@ -8,7 +8,6 @@ const Home = () => {
       <Banner />
 
       <section>
-        <h3>Menu</h3>
         <div className="grid grid-cols-1 "></div>
       </section>
 

@@ -17,7 +17,7 @@ const Login = () => {
 
   // State for handling feedback
   const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [mode, setMode] = useState("login");
   const { loginUser, registration_user, forgetpassword } = useAppContext();
@@ -32,13 +32,13 @@ const Login = () => {
     setError("");
   };
 
-  //dynamically check the email validation
+  //dynamically check the email validation regex
   useEffect(() => {
-    if (formData.email == "") return;
-    const pattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{3,}$/;
-    {
-      pattern.test(formData.email) ? setIsLoading(false) : setIsLoading(true);
-    }
+    if (formData.email === "") return;
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{3,}$/;
+    
+      regex.test(formData.email) ? setIsLoading(false) : setIsLoading(true);
+    
   }, [formData.email]);
 
   // Handle form submission
@@ -277,7 +277,7 @@ const Login = () => {
               disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Processing..." : isLogin ? "Sign in" : "Sign up"}
+              {isLoading ? "Loading.." : isLogin ? "Sign in" : "Sign up"}
             </button>
 
             {isLogin && (

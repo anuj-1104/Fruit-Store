@@ -140,7 +140,7 @@ async def get_profile(current_user_id: str = Depends(get_current_user))->str:
    :return: Description
    :rtype: str
    """
-   try:
+   try: 
 
     id=current_user_id.get("id")
     db_user = db.users.find_one({"_id":ObjectId(id)},{"password":0})        #exclude password

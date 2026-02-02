@@ -21,7 +21,10 @@ const Navbar = () => {
   return (
     <div className="sticky top-0 z-50">
       <nav className="flex items-center justify-between px-6 md:px-16 lg:px-24 xl:px-32 py-4 bg-black bg-opacity-95 backdrop-blur-md border-b border-gray-700 shadow-lg transition-all">
-        <div className="flex items-center gap-2">
+        <div
+          onClick={() => navigate("/")}
+          className="flex cursor-pointer items-center gap-2"
+        >
           <CiApple className="text-white text-4xl transition-transform hover:scale-110" />
           <h1 className="text-white text-3xl font-bold tracking-wide">
             Fruits-Store

@@ -93,8 +93,7 @@ const Login = () => {
     setIsGoogleLoading(true);
     try {
       // await loginWithGoogle();     create a login with google functionality
-      console.log("Google login successful!");
-      toast.success("Google login successful!");
+      toast.error("404: Unauthorized User");
     } catch (err) {
       setError(err.message || "Failed to login with Google.");
     } finally {
@@ -276,13 +275,13 @@ const Login = () => {
               disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Loading.." : isLogin ? "Sign in" : "Sign up"}
+              {isLoading ? "Loading..." : isLogin ? "Sign in" : "Sign up"}
             </button>
 
             {isLogin && (
               <a
                 className="text- cursor-pointer object-center mt-5 flex justify-center text-indigo-600 hover:text-indigo-500"
-                id=""
+                id="forget_password"
                 onClick={() => setMode("froget_password")}
               >
                 {" "}

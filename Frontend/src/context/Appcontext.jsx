@@ -176,11 +176,10 @@ export const AuthProvider = ({ children }) => {
           setFilterProduct(res.data || []);
         }
       } catch (error) {
-        // console.error(error);
         setError("Failed to load products");
         toast.error(error.message);
       } finally {
-        setLoading(false); // stop loading (ONLY ONCE)
+        setLoading(false);
       }
     };
 
@@ -188,18 +187,17 @@ export const AuthProvider = ({ children }) => {
   }, [token]);
 
   useEffect(() => {
-    if (searchQuery.length > 2) {
+    if (searchQuery.length > 1) {
       navigate("/fruites");
     }
     filterProduct(searchQuery);
   }, [searchQuery]);
 
-  const filterProduct = (searhing) => {
+  const filterProduct = () => {
     const result = filterproduct.filter((value) =>
       value.p_name.toLowerCase().includes(searchQuery),
     );
     setData(result);
-    console.log(result);
   };
 
   const value = {

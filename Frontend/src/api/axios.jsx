@@ -7,7 +7,6 @@ if (!token) {
 }
 // console.log(token);
 
-
 const instant = axios.create({
   baseURL: `${api}`,
   withCredentials: true,

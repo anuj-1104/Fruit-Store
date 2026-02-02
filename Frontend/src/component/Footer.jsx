@@ -33,53 +33,41 @@ const Footer = () => {
               natus debitis, nostrum corrupti dignissimos iste unde voluptate
               repudiandae. Dolorem rerum quo molestiae!
             </p>
-            {/* <div className="flex space-x-4 pt-2">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <SiFacebook className="text-xl" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <SiTwitter className="text-xl" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <SiInstagram className="text-xl" />
-              </a>
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
-                <SiLinkedin className="text-xl" />
-              </a>
-            </div> */}
           </div>
-          
+
           {/* Quick Links */}
           <div className="flex flex-col lg:items-center">
-            <h2 className="font-semibold text-lg mb-6 text-white">Quick Links</h2>
+            <h2 className="font-semibold text-lg mb-6 text-white">
+              Quick Links
+            </h2>
             <div className="flex flex-col space-y-3">
-              <Link 
-                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200" 
+              <Link
+                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
                 to="/about"
               >
                 About us
               </Link>
-              <Link 
-                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200" 
+              <Link
+                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
                 to="/careers"
               >
                 Careers
               </Link>
-              <Link 
-                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200" 
+              <Link
+                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
                 to="/contact"
               >
                 Contact us
               </Link>
-              <Link 
-                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200" 
+              <Link
+                className="text-gray-300 hover:text-cyan-400 transition-colors duration-200"
                 to="/privacy"
               >
                 Privacy policy
               </Link>
             </div>
           </div>
-          
+
           {/* Newsletter */}
           <div>
             <h2 className="font-semibold text-lg mb-6 text-white">
@@ -90,7 +78,10 @@ const Footer = () => {
                 The latest news, articles, and resources, sent to your inbox
                 weekly.
               </p>
-              <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-2">
+              <form
+                onSubmit={handleSubscribe}
+                className="flex flex-col sm:flex-row gap-2"
+              >
                 <input
                   className="rounded-md bg-gray-800 text-white outline-none w-full h-11 px-4 border border-gray-700 focus:border-cyan-400 transition-colors"
                   type="email"
@@ -108,7 +99,7 @@ const Footer = () => {
             </div>
           </div>
         </div>
-        
+
         {/* Copyright Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-6 mt-10 border-t border-gray-800">
           <div className="flex items-center gap-2">
@@ -119,13 +110,22 @@ const Footer = () => {
             Copyright © {currentYear} Fruits-Store. All Rights Reserved.
           </p>
           <div className="flex items-center gap-6 text-sm">
-            <Link to="/privacy" className="text-gray-400 hover:text-cyan-400 transition-colors">
+            <Link
+              to="/privacy"
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+            >
               Privacy Policy
             </Link>
-            <Link to="/terms" className="text-gray-400 hover:text-cyan-400 transition-colors">
+            <Link
+              to="/terms"
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+            >
               Terms of Service
             </Link>
-            <Link to="/cookies" className="text-gray-400 hover:text-cyan-400 transition-colors">
+            <Link
+              to="/cookies"
+              className="text-gray-400 hover:text-cyan-400 transition-colors"
+            >
               Cookie Policy
             </Link>
           </div>

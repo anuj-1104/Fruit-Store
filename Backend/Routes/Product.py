@@ -10,7 +10,6 @@ from bson import ObjectId       #to convert a string in the object id to used a 
 import os
 import requests
 from dotenv import load_dotenv
-# from pathlib import Path       #used for the file path
 from typing import Any,List
 
 load_dotenv()
@@ -141,11 +140,21 @@ async def update_product(
     except Exception as e:
         raise HTTPException(status_code=500, detail="Internal server error")
 
+
+
 # ----------------------Delete product---------------------
 @product_router.delete("/delete/{id}", status_code=200, dependencies=[Depends(get_current_user)])
 async def delete_product(
     id: str,
     current_user: dict = Depends(get_current_user)):        #get the current login userid
+    """
+    Docstring for delete_product
+    
+    :param id: Description
+    :type id: str
+    :param current_user: Description
+    :type current_user: dict
+    """
     try:
         # Admin check
         if current_user.get("role") != "admin":
@@ -167,9 +176,15 @@ async def delete_product(
 class ProductRequest(BaseModel):
     p_id:List[str]
 
+
 @product_router.post("/findproduct", status_code=200,response_model=List[ResponseProduct])
 async def find_product(data:ProductRequest):
-
+    """
+    Docstring for find_product
+    
+    :param data: Description
+    :type data: ProductRequest
+    """
     try:
 
         p_ids=data.p_id
@@ -227,7 +242,16 @@ async def feedback_form(current_user:dict=Depends(get_current_user)):
 
 @product_router.post("/order/product", status_code=200)
 async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_user)):
-    """Order new Order"""   
+    """
+    Docstring for orderProduct
+    
+    :param data: Description
+    :type data: Ordernew
+    :param current_user: Description
+    :type current_user: dict
+    :return: Description
+    :rtype: dict[str, str]
+    """ 
     
     try:
         user_id = current_user.get("id")
@@ -252,7 +276,7 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
         
         product_data = list(
             db.products.find(
-                {"_id": {"$in": product_object_ids}},
+                {"_id": {"$in": product_object_ids}},       #find a multiple id list
                 {"p_id": 1, "p_name": 1, "p_qty": 1, "p_offerprice": 1}
             )
         )
@@ -276,7 +300,7 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
             if product.get("p_qty", 0) < item.p_qty:
                 unavailable_data.append({
                     "p_id": product_id,
-                    "p_name": product.get("p_name", "Unknown"),
+                    "p_name": product.get("p_name", "Unknown"),     #get method not error generate name not find none
                     "available_stock": product["p_qty"],
                     "required": item.p_qty,
                     "error": "INSUFFICIENT_STOCK"
@@ -302,7 +326,7 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
     except HTTPException:
         raise HTTPException(detail="error")
     except Exception as e:
-        raise HTTPException(status_code=500, detail="Internal server error")
+        raise HTTPException(status_code=500, detail=f"Internal server error {str(e)}")
 
 
 #-----all user orders-----------
@@ -341,5 +365,6 @@ async def getallorder(currnt_user:Any=Depends(get_current_user)):      #secure r
     except ValueError as e:
         raise HTTPException(status_code=500,detail=f"Internal server Error. {str(e)}")
     
-
-#
+    except Exception as e:
+        raise Exception(status_code=500,detail=f"{str(e)}")
+    

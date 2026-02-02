@@ -81,6 +81,7 @@ async def forget_password(data:ForgetPassword)->Any:
             raise HTTPException(status_code=404,detail="data not updated")
 
         return JSONResponse(
+            status_code=200,
             content="Password Updated Successfully"
         )
         

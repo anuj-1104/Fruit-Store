@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field, ConfigDict, model_validator,field_validator
 from datetime import datetime
-from bson import ObjectId
+from bson import ObjectId           #find a user_id in mongo
 from typing import Optional, List
 
 app = FastAPI()
@@ -9,6 +9,7 @@ app = FastAPI()
 #used of the pydentic library
 # ---------------- Product Model ----------------
 class Product(BaseModel):
+
     p_id: int
     p_name: str
     p_qty: int
@@ -37,7 +38,7 @@ class OrderCreateSchema(BaseModel):
     p_id: List[str]
     quantity: int
     total_price: float
-    order:str=Field(default="pending")
+    online_payment:str=Field(default="pending")
     
 
     @field_validator("p_id")        #field validate for the used a class any variavle
@@ -75,9 +76,23 @@ class ResponseProduct(BaseModel):
     description:str
 
 #---------
+#order data
+
+class Userdata(BaseModel):
+
+    user_name:str
+    phone:str
+    email:str
+    cardnumber:Optional[str]=None
+    payment:str=Field(default="COD") 
+    cvv_no:str
+
+
 class Ordernew(BaseModel):
 
     user_id:Optional[str]=None
     p_items:List[ResponseProduct]
     total_price:int
+    user:Userdata
+    online_payment:str=Field(default="pending")
     created_At: datetime = Field(default_factory=datetime.now)

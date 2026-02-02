@@ -10,16 +10,16 @@ from bson import ObjectId       #to convert a string in the object id to used a 
 import os
 import requests
 from dotenv import load_dotenv
-from pathlib import Path       #used for the file path
+# from pathlib import Path       #used for the file path
 from typing import Any,List
 
 load_dotenv()
-IMAGE_URL=os.getenv("IMAGE_URL")
+IMAGE_URL=os.getenv("IMAGE_URL")        #stored the image in the bbimage in server
+image_bb_key=os.getenv("IMAGE_BB_KEY")
 
 
 product_router = APIRouter()
 
-image_bb_key=os.getenv("IMAGE_BB_KEY")
 
 #----------------- Get all products ----------------
 @product_router.get("/products", status_code=200)
@@ -58,7 +58,8 @@ async def create_product(
 
     try:
         # Admin check
-        if current_user_id.get("role") != "admin":
+        user_id=current_user_id.get("role").lower()
+        if user_id != "admin":
             raise HTTPException(status_code=403, detail="Admin access required")
         
         # Duplicate check - use p_name field
@@ -100,7 +101,7 @@ async def create_product(
         return {
             "message": "Product added successfully",
             "product": {
-                **product_dict,             ##Original Datajson clean the data
+                **product_dict,             ##Original Data json clean data
                 "_id": str(result.inserted_id)  #  Add ID to response
             },
             "id": str(result.inserted_id)
@@ -184,7 +185,6 @@ async def find_product(data:ProductRequest):
             raise HTTPException(status_code=404, detail="Product not Found")
 
         
-        
         return [ResponseProduct(
             p_id=str(p["_id"]),       #Pass a product id 
             p_name=p["p_name"],
@@ -236,10 +236,11 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
         if not user_data:
             raise HTTPException(status_code=404, detail="User not found")
         
+        # print(f"data: {data}")        check the data dummy 
 
         #addd the particular login user id and datetime
         data_dict = data.model_dump()
-        data_dict["user_id"] = str(user_data["_id"])
+        data_dict["user_id"] = str(user_data["_id"])        
         data_dict["created_At"] = datetime.utcnow().isoformat() + "Z"
         
         product_object_ids = []
@@ -291,6 +292,7 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
             )
         
         order_data = db.purchases.insert_one(data_dict)
+        # print(f"order_data:{order_data}")
         return {
             "status": "success", 
             "message": "Order created successfully", 
@@ -315,7 +317,7 @@ async def getallorder(currnt_user:Any=Depends(get_current_user)):      #secure r
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="not found")
         
         #new Orderfirst
-        all_orders= list(db.purchases.find({"user_id":str(user_id)}))     #exclude a order id 
+        all_orders= list(db.purchases.find({"user_id":str(user_id)}).sort("created_At",-1))     #exclude a order id  order last is first used a sort method
         # print(all_orders)
 
         #to seprate a all order id convert in string object id not a passed

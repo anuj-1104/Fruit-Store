@@ -30,7 +30,9 @@ const Product_Card = ({ id, image, name, qty, price, offerprice }) => {
           />
           <SiCodefresh className="text-white text-2xl absolute m-1" />
           <p className="text-white text-lg font-semibold">{name}</p>
-          <p className="text-gray-300 line-through">Price: ₹{price}</p>
+          <p className="text-gray-300 ">Price: <span className="line-through">₹{price}
+            
+            </span></p>
           <p className="text-gray-300">Qty: {qty}</p>
           <p className="text-cyan-200 font-semibold">
             Offer Price: ₹{offerprice}

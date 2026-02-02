@@ -36,9 +36,8 @@ const Login = () => {
   useEffect(() => {
     if (formData.email === "") return;
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{3,}$/;
-    
-      regex.test(formData.email) ? setIsLoading(false) : setIsLoading(true);
-    
+
+    regex.test(formData.email) ? setIsLoading(false) : setIsLoading(true);
   }, [formData.email]);
 
   // Handle form submission
@@ -48,7 +47,7 @@ const Login = () => {
       switch (mode) {
         case "login":
           await loginUser({
-            email: formData.email,
+            email: formData.email.toLocaleLowerCase(),
             password: formData.password,
           });
 
@@ -106,7 +105,7 @@ const Login = () => {
   // console.log(mode);
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 ">
+    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8  bg-cyan-200">
       <div className="max-w-md w-full space-y-8 bg-black border-white border p-8 rounded-xl shadow-lg">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">

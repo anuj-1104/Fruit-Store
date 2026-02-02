@@ -14,14 +14,14 @@ const BuyProduct = () => {
   const [loading, setLoading] = useState(false);
   const [model, setModel] = useState(false); // Changed to false initially
   const [formdata, setFormData] = useState({
-    name: "",
+    user_name: "",
     phone: "",
     email: "",
     cardnumber: "",
-    date: "",
+    payment: "",
     cvv_no: "",
   });
-  const { addToCart, removeToCart } = useAppContext();
+  const { addToCart } = useAppContext();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -66,6 +66,7 @@ const BuyProduct = () => {
       const res = await axios.post(`/product/order/product`, {
         p_items: [product], //pass a multiple fruits in one orderlist data
         total_price: product.p_offerprice,
+        user: formdata,
       });
 
       // console.log(res);
@@ -74,7 +75,7 @@ const BuyProduct = () => {
         // console.log(res);
         setLoading(true);
         setFormData({
-          name: "",
+          user_name: "",
           phone: "",
           email: "",
           cardnumber: "",
@@ -307,8 +308,8 @@ const BuyProduct = () => {
                     </label>
                     <input
                       type="text"
-                      name="name"
-                      value={formdata.name}
+                      name="user_name"
+                      value={formdata.user_name}
                       onChange={handleInput}
                       required
                       className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
@@ -365,18 +366,20 @@ const BuyProduct = () => {
                   <div className="grid grid-cols-2 gap-4">
                     <div>
                       <label className="block text-sm font-medium text-white mb-2">
-                        Expiry Date
+                        Payment Type
                       </label>
-                      <input
-                        type="text"
-                        required
-                        name="date"
-                        value={formdata.date}
+
+                      <select
+                        name="payment"
+                        id="paymet"
+                        value={formdata.payment}
                         onChange={handleInput}
-                        maxLength="5"
-                        placeholder="MM/YY"
                         className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
-                      />
+                      >
+                        <option className="bg-black" value="">Select Payment</option>
+                        <option className="bg-black" value="COD">Cash On Delivery</option>
+                        <option className="bg-black" value="ONLINE">Online Payement</option>
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-white mb-2">

@@ -6,55 +6,50 @@ import { useAppContext } from "../context/Appcontext";
 const CartPage = () => {
   const [cartproduct, setCartProduct] = useState([]);
   const [loading, setLoading] = useState(true);
-  const cartItems = JSON.parse(localStorage.getItem("cartItems") || "[]");
-  const id = Object.keys(cartItems); //convert a object type to find a length
-
-  const { removeToCart, navigate } = useAppContext();
+  const [showAddress, setShowAddress] = React.useState(false);
+  const { removeToCart, navigate, total_count } = useAppContext();
+  const id = Object.keys(total_count); //convert a object type to find a length
 
   useEffect(() => {
     const fetchCartData = async () => {
       try {
-        // console.log(id.length);
-
         if (id.length === 0) {
-          setLoading(false);
+          setLoading(true);
           return;
         }
 
         const res = await axios.post(`/product/findproduct`, {
           p_id: id,
         });
-        console.log(res.data);
 
         if (res.status === 200) {
           const data = res.data;
           setCartProduct(data);
+          setLoading(false);
         }
       } catch (error) {
         console.error("Failed to fetch cart:", error);
         toast.error("Failed to load cart items");
-        setCartProduct(); // Ensure array even on error
+        setCartProduct([]); // Ensure array even on error
       }
     };
+
     fetchCartData();
-  }, [id]);
+  }, [total_count]);
 
   //removed from cartitems
   const carthandller = (p_id) => {
-    if (!id) {
+    if (id.length === 0) {
+      //always return array
       toast.error("Id not found");
       return;
     }
     removeToCart(p_id);
   };
 
-  console.log(loading);
-
-  const [showAddress, setShowAddress] = React.useState(false);
-
   return (
     <div className="flex flex-col md:flex-row py-16  max-w-8xl   place-content-center w-full gap-10 px-6 mx-auto bg-black">
-      <div className="flex-1 max-w-4xl border border-white rounded-2xl p-3    ">
+      <div className="flex-1 max-w-4xl border border-white rounded-2xl p-3   ">
         <h1 className="text-3xl font-medium mb-6 text-white">
           Shopping Cart{" "}
           <span className="text-sm text-white">{id.length} Items</span>
@@ -66,7 +61,7 @@ const CartPage = () => {
           <p className="text-center">Action</p>
         </div>
 
-        {!loading
+        {loading
           ? "Loading"
           : cartproduct.map((product, index) => (
               <div
@@ -130,13 +125,14 @@ const CartPage = () => {
             ))}
 
         <button
-          className="group cursor-pointer flex text-white items-center mt-8 gap-2  font-medium"
+          className="group cursor-pointer flex text-white items-center mt-8 gap-2   font-medium"
           onClick={() => navigate("/fruites")}
         >
           <svg
             width="15"
             height="11"
             viewBox="0 0 15 11"
+            className="hover:-translate-x-2 duration-150"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
           >
@@ -192,7 +188,7 @@ const CartPage = () => {
             Payment Method
           </p>
 
-          <select className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none">
+          <select className="w-full border rounded-2xl border-gray-300 bg-white px-3 py-2 mt-2 outline-none">
             <option value="COD">Cash On Delivery</option>
             <option value="Online">Online Payment</option>
           </select>
@@ -219,8 +215,11 @@ const CartPage = () => {
           </p>
         </div>
 
-        <button className="w-full py-3 mt-6 cursor-pointer bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition">
-          Place Order
+        <button
+          disabled={id.length === 0}
+          className={`w-full rounded-2xl  py-3 mt-6  cursor-pointer disabled:cursor-not-allowed disabled:opacity-50  bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition`}
+        >
+          {id.length > 0 ? "Place Order" : "Add Cart Items"}
         </button>
       </div>
     </div>

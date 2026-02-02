@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import { toast } from "react-toastify";
 
-// 1. Context Create karo     step 1 create a context
+// 1. Create a Context     step 1 create a context
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
@@ -15,8 +15,8 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
   const [total_count, setTotalCount] = useState({});
   const [loading, setLoading] = useState(true);
-
-  // console.log(total_count.len);/
+  const [searchQuery, setSearchQuery] = useState("");
+  const [filterproduct, setFilterProduct] = useState([]);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -55,19 +55,15 @@ export const AuthProvider = ({ children }) => {
   }, [total_count]);
 
   const loginUser = async (userData) => {
-    // console.log(userData);
     try {
       const response = await axios.post("/user/login", {
         email: userData.email,
         password: userData.password,
       });
 
-      // console.log(response.data.user);
       if (response.request.status === 200) {
         const token = response.data.access_token;
         const jsonData = JSON.stringify(response.data.user);
-
-        // console.log(jsonData);
 
         // Save token
         localStorage.setItem("token", token);
@@ -93,7 +89,6 @@ export const AuthProvider = ({ children }) => {
   }, [total_count]);
 
   const addToCart = (productId) => {
-    toast.success("Added Successfully..");
     const updatedCart = { ...total_count };
     updatedCart[productId] = (updatedCart[productId] || 0) + 1;
     setTotalCount(updatedCart);
@@ -101,8 +96,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const removeToCart = (productId) => {
-    // console.log(productId);
-    toast.error("Quantity Decreased"); // Fixed toast message
+    toast.success("Quantity Decreased");
     const updatecart = { ...total_count };
     if (updatecart[productId]) {
       updatecart[productId] -= 1;
@@ -121,7 +115,6 @@ export const AuthProvider = ({ children }) => {
         password: formdata.password,
         confirm_pass: formdata.confirm_pass,
       });
-      // console.log(response);
 
       if (response.request.status === 200) {
         console.log("Password frogated...");
@@ -180,6 +173,7 @@ export const AuthProvider = ({ children }) => {
         if (res.status === 200) {
           setData(res.data || []); //not a error
           setError(null);
+          setFilterProduct(res.data || []);
         }
       } catch (error) {
         // console.error(error);
@@ -193,12 +187,29 @@ export const AuthProvider = ({ children }) => {
     fetchProducts();
   }, [token]);
 
+  useEffect(() => {
+    if (searchQuery.length > 2) {
+      navigate("/fruites");
+    }
+    filterProduct(searchQuery);
+  }, [searchQuery]);
+
+  const filterProduct = (searhing) => {
+    const result = filterproduct.filter((value) =>
+      value.p_name.toLowerCase().includes(searchQuery),
+    );
+    setData(result);
+    console.log(result);
+  };
+
   const value = {
     user,
     loginUser,
     data,
     error,
     loading,
+    searchQuery,
+    setSearchQuery,
     registration_user,
     token,
     Logout,
@@ -210,7 +221,6 @@ export const AuthProvider = ({ children }) => {
     total_count,
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-  // 3. Values provide karo
 };
 
 //easy to use a any child

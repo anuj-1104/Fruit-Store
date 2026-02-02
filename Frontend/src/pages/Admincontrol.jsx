@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { FaImages } from "react-icons/fa6";
 
 const Admincontrol = () => {
+  const [error, setError] = useState(null);
   const [formdata, setFormdata] = useState({
     p_id: "",
     p_name: "",
@@ -13,9 +14,8 @@ const Admincontrol = () => {
     image: "",
     description: "",
   });
-
-  const [error, setError] = useState(null);
-
+  const token = localStorage.getItem("token");
+  console.log(token);
   const handlechange = (e) => {
     const { name, value } = e.target;
     setFormdata((prev) => ({
@@ -36,6 +36,7 @@ const Admincontrol = () => {
       const response = await axios.post("product/add", formdata, {
         headers: {
           "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
         },
       });
 

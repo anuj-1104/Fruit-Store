@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect, useEffectEvent } from "react";
 import { useAppContext } from "../context/Appcontext";
 import { Link } from "react-router-dom";
 import { CiApple } from "react-icons/ci";
@@ -7,10 +7,16 @@ import { TiThMenu } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 
 const Navbar = () => {
-  const { user, navigate, total_count } = useAppContext();
+  const { user, navigate, total_count, setSearchQuery } = useAppContext();
   const [open, setOpen] = useState(false);
   const { Logout } = useAppContext();
-  const [searchQuery, setSearchQuery] = useState("");
+  const [searchproduct, setSearchProduct] = useState("");
+
+  useEffect(() => {
+    setSearchQuery(searchproduct.toLowerCase());
+  }, [searchproduct]);
+
+  const cart_itmes = Object.keys(total_count).length; //return a any object length of the array of the store.
 
   return (
     <div className="sticky top-0 z-50">
@@ -57,8 +63,8 @@ const Navbar = () => {
               className="py-1 w-full bg-transparent outline-none placeholder-gray-500 text-white"
               type="text"
               placeholder="Search products"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchproduct}
+              onChange={(e) => setSearchProduct(e.target.value)}
             />
           </div>
 
@@ -67,9 +73,9 @@ const Navbar = () => {
               className="text-3xl transition-transform group-hover:scale-110"
               onClick={() => navigate("/fruites/cart-items")}
             />
-            {total_count?.length > 0 && (
+            {cart_itmes > 0 && (
               <span className="absolute -top-2 -right-3 text-xs text-white bg-linear-to-r from-cyan-500 to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg">
-                {total_count.length}
+                {cart_itmes}
               </span>
             )}
           </div>
@@ -144,8 +150,8 @@ const Navbar = () => {
               className="w-full bg-transparent outline-none placeholder-gray-500 text-white"
               type="text"
               placeholder="Search products"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchproduct}
+              onChange={(e) => setSearchProduct(e.target.value)}
             />
           </div>
 
@@ -158,9 +164,9 @@ const Navbar = () => {
                   setOpen(false);
                 }}
               />
-              {total_count?.length > 0 && (
+              {cart_itmes > 0 && (
                 <span className="absolute -top-2 -right-3 text-xs text-white bg-linear-to-r from-cyan-500 to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg">
-                  {total_count.length}
+                  {cart_itmes}
                 </span>
               )}
             </div>

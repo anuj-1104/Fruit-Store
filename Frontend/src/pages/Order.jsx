@@ -5,11 +5,11 @@ import { toast } from "react-toastify";
 
 const Order = () => {
   const { token } = useAppContext();
-  const [order, setOrder] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [order, setOrder] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState(null);
+  const [filteredData, setFilteredData] = useState([]);
 
   //find the orders search query
   const handleSearch = (e) => {
@@ -24,6 +24,8 @@ const Order = () => {
     setFilteredData(result);
   };
 
+  console.log(filteredData);
+
   useEffect(() => {
     const fetchOrders = async () => {
       if (!token) return;
@@ -36,13 +38,14 @@ const Order = () => {
           },
         });
 
-        console.log(res.data.orders);
+        // console.log(res.data.orders);
         if (res.request?.status === 200) {
           setOrder(res.data.orders);
           setFilteredData(res.data.orders);
+          setLoading(false);
           toast.success(res.data.message || "Orders loaded successfully");
         } else {
-          throw new Error(res.data?.message || "Failed to load orders"); //handle a throw  a catch catched the error.
+          toast.error("Error not find order ");
         }
       } catch (err) {
         console.error("Order fetch error:", err);
@@ -59,23 +62,6 @@ const Order = () => {
 
     if (token) fetchOrders(); //check the token present or not
   }, []);
-
-  // Loading state
-  if (loading) {
-    return <div className="loading">Loading orders...</div>;
-  }
-
-  // Error state not find a oreder and error true
-  if (error || !order) {
-    return (
-      <div className="error-state">
-        <h3>No orders found</h3>
-        <button onClick={() => window.location.reload()}>
-          Retry Loading Orders
-        </button>
-      </div>
-    );
-  }
 
   return (
     <div className="orders-container bg-black text-white p-3  ">

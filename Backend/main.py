@@ -22,11 +22,12 @@ origin=os.getenv("ORIGIN_CLIENT")
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origin,  #to use only one client
+    allow_origins=["https://fruit-store-psi.vercel.app","http://localhost:5173"],  #to use only one client
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 # Default server Routes
 @app.get("/")

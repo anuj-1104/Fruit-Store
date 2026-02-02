@@ -24,8 +24,6 @@ const Order = () => {
     setFilteredData(result);
   };
 
-  console.log(filteredData);
-
   useEffect(() => {
     const fetchOrders = async () => {
       if (!token) return;

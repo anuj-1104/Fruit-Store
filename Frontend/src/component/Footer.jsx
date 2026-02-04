@@ -90,7 +90,7 @@ const Footer = () => {
                   onChange={(e) => setEmail(e.target.value)}
                 />
                 <button
-                  className="bg-linear-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 px-6 h-11 text-white rounded-md font-medium"
+                  className="bg-linear-to-r active:scale-95  from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 transition-all duration-200 px-6 h-11 text-white rounded-md font-medium"
                   type="submit"
                 >
                   Subscribe
@@ -103,7 +103,6 @@ const Footer = () => {
         {/* Copyright Section */}
         <div className="flex flex-col md:flex-row items-center justify-between gap-4 py-6 mt-10 border-t border-gray-800">
           <div className="flex items-center gap-2">
-            {/* <SiCodefresh className="text-2xl text-cyan-400" /> */}
             <span className="text-gray-400">Powered by CodeFresh</span>
           </div>
           <p className="text-gray-400 text-center">

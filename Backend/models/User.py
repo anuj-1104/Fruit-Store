@@ -1,5 +1,5 @@
-from pydantic import BaseModel, EmailStr,Field      #field validator
-from typing import Optional
+from pydantic import BaseModel, EmailStr,Field     #field validator
+from typing import Optional,List
 
 class User(BaseModel):
     email: EmailStr
@@ -11,6 +11,7 @@ class UserCreate(BaseModel):
     password: str=Field(description="Enter a password",examples=["12345678"])
     name: Optional[str] = None
     phone: Optional[str] = None
+    feedback:List[str]=None
     role:str=Field(examples=["admin"],default="user")
 
 class UserResponse(BaseModel):

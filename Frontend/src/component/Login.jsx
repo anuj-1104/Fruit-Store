@@ -2,11 +2,27 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/Appcontext";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const Login = () => {
   // State to toggle between Login and Register forms
-  const [isLogin, setIsLogin] = useState(true);
 
+  //initialize AOS nimation
+
+  useEffect(() => {
+    AOS.init({
+      duration: 1000,
+      once: false,
+      offset: 100,
+    });
+  }, []);
+
+  const [error, setError] = useState("");
+  const [isLogin, setIsLogin] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [mode, setMode] = useState("login");
   // State for form data
   const [formData, setFormData] = useState({
     name: "", // Only used for registration
@@ -15,11 +31,6 @@ const Login = () => {
     phone: "",
   });
 
-  // State for handling feedback
-  const [error, setError] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
-  const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [mode, setMode] = useState("login");
   const { loginUser, registration_user, forgetpassword } = useAppContext();
 
   // Handle input changes
@@ -35,9 +46,9 @@ const Login = () => {
   //dynamically check the email validation regex
   useEffect(() => {
     if (formData.email === "") return;
-    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{3,}$/;
+    const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
 
-    regex.test(formData.email) ? setIsLoading(false) : setIsLoading(true);
+    setIsLoading(!regex.test(formData.email));
   }, [formData.email]);
 
   // Handle form submission
@@ -62,14 +73,16 @@ const Login = () => {
 
           setMode("login");
           break;
-        case "froget_password":
+        case "forget_password":
           const res = await forgetpassword({
             email: formData.email,
             password: formData.password,
             confirm_pass: formData.confirm_pass,
           });
           break;
+
         default:
+          toast.error("Error: 404");
           break;
       }
     } catch (error) {
@@ -101,22 +114,23 @@ const Login = () => {
     }
   };
 
-  // console.log(mode);
-
   return (
-    <div className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8  bg-cyan-200">
-      <div className="max-w-md w-full space-y-8 bg-black border-white border p-8 rounded-xl shadow-lg">
+    <div className="min-h-screen  flex items-center reltive justify-center-safe    sm:px-6 lg:px-8 bg-cover  bg-[url('https://i.ibb.co/DgHm84d2/Pngtree-fresh-hand-painted-blue-banner-on-1095971.jpg')]">
+      <div
+        className="max-w-md w-full space-y-8 border-white border p-3 rounded-xl backdrop-blur-md bg-white/10 "
+        data-aos="zoom-in"
+      >
         <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
+          <h2 className="mt-6 text-center text-3xl text-blue-600 font-extrabold ">
             {mode === "login" && "Sign in to your account"}
-            {mode === "froget_password" && "Reset Your Password"}
+            {mode === "forget_password" && "Forget Your Password"}
             {mode === "register" && "Create a new account"}
           </h2>
           <p className="mt-2 text-center text-sm text-white">
             {mode === "login" ? "Or" : "Already have an account?"}{" "}
             <button
               type="button"
-              className="font-medium text-indigo-600 hover:text-indigo-500"
+              className=" underline-offset-4 underline font-bold  text-blue-600 hover:text-blue-500"
               onClick={() => setMode(mode === "login" ? "register" : "login")}
             >
               {mode === "login" ? "Sign up now" : "Sign in"}
@@ -139,7 +153,7 @@ const Login = () => {
 
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-gray-300"></div>
+            <div className="w-full border-t border-blue-400"></div>
           </div>
           <div className="relative flex justify-center text-sm ">
             <span className="px-2 bg-white text-black bordder rounded-md">
@@ -151,11 +165,11 @@ const Login = () => {
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           {/* Name field - only shown for registration */}
           {mode === "register" && (
-            <div className="space-y-4">
-              <div>
+            <div className="space-y-4 ">
+              <div className="bg-sky-300  p-2 rounded-2xl">
                 <label
                   htmlFor="name"
-                  className="block text-sm font-medium text-white"
+                  className="block text-sm text-center font-bold text-blue-600"
                 >
                   Full Name
                 </label>
@@ -166,14 +180,14 @@ const Login = () => {
                   required={!isLogin}
                   value={formData.name}
                   onChange={handleChange}
-                  className="mt-1 appearance-none text-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 appearance-none bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Enter your full name"
                 />
               </div>
-              <div>
+              <div className="bg-sky-300  p-2 rounded-2xl">
                 <label
                   htmlFor="phone"
-                  className="block text-sm font-medium text-white"
+                  className="block text-sm  text-center font-bold text-blue-600"
                 >
                   Phone Number
                 </label>
@@ -184,17 +198,17 @@ const Login = () => {
                   required={!isLogin}
                   value={formData.phone}
                   onChange={handleChange}
-                  className="mt-1 appearance-none text-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   placeholder="Enter your phone number"
                 />
               </div>
             </div>
           )}
 
-          <div>
+          <div className="bg-sky-300 rounded-2xl p-2">
             <label
               htmlFor="username"
-              className="block text-sm font-medium text-white"
+              className="block text-sm text-center  text-blue-600 font-bold"
             >
               Email Address
             </label>
@@ -205,15 +219,15 @@ const Login = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 appearance-none text-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 appearance-none  bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter your username"
             />
           </div>
 
-          <div>
+          <div className="bg-sky-300 rounded-2xl p-2">
             <label
               htmlFor="password"
-              className="block text-sm font-medium text-white"
+              className="block text-sm text-center  text-blue-600 font-bold"
             >
               Password
             </label>
@@ -225,37 +239,40 @@ const Login = () => {
               minLength={6}
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 appearance-none text-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
               placeholder="Enter your password"
             />
           </div>
-          {mode === "froget_password" && (
-            <div>
-              <label
-                htmlFor="confirm_pass"
-                className="block text-sm font-medium text-white"
-              >
-                Confirm Password
-              </label>
-              <input
-                id="confirm_pass"
-                name="confirm_pass"
-                type="password"
-                required
-                minLength={6}
-                value={formData.confirm_pass}
-                onChange={handleChange}
-                className="mt-1 appearance-none text-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                placeholder="Enter your confirm_pass"
-              />
-
-              <a
-                onClick={() => setMode("login")}
-                className="text- cursor-pointer object-center mt-5 flex justify-center text-indigo-600 hover:text-indigo-500"
-              >
-                Back to login.{" "}
-              </a>
-            </div>
+          {mode === "forget_password" && (
+            <>
+              <div className="bg-sky-300 rounded-2xl p-2">
+                <label
+                  htmlFor="confirm_pass"
+                  className="block text-sm text-center text-blue-600 font-bold "
+                >
+                  Confirm Password
+                </label>
+                <input
+                  id="confirm_pass"
+                  name="confirm_pass"
+                  type="password"
+                  required
+                  minLength={6}
+                  value={formData.confirm_pass}
+                  onChange={handleChange}
+                  className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  placeholder="Enter your confirm_pass"
+                />
+              </div>
+              <div className="">
+                <a
+                  onClick={() => setMode("login")}
+                  className="font-bold underline-offset-4 underline  cursor-pointer object-center mt-5 flex justify-center text-blue-600 hover:text-blue-500"
+                >
+                  Back to login.{" "}
+                </a>
+              </div>
+            </>
           )}
 
           {/* Display error message if any */}
@@ -269,24 +286,24 @@ const Login = () => {
             </div>
           )}
 
-          <div>
+          <div className="flex flex-col items-center">
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative duration-200 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-sky-400 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Loading..." : isLogin ? "Sign in" : "Sign up"}
+              {isLoading ? "Loading . . ." : isLogin ? "Sign in" : "Sign up"}
             </button>
 
             {isLogin && (
-              <a
-                className="text- cursor-pointer object-center mt-5 flex justify-center text-indigo-600 hover:text-indigo-500"
+              <button
+                type="button"
                 id="forget_password"
-                onClick={() => setMode("froget_password")}
+                onClick={() => setMode("forget_password")}
+                className="mt-5 font-bold underline underline-offset-4 text-blue-600 hover:text-blue-500 transition"
               >
-                {" "}
-                forget password ?
-              </a>
+                Forget password?
+              </button>
             )}
           </div>
         </form>

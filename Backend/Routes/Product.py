@@ -177,8 +177,8 @@ class ProductRequest(BaseModel):
     p_id:List[str]
 
 
-@product_router.post("/findproduct", status_code=200,response_model=List[ResponseProduct])
-async def find_product(data:ProductRequest):
+@product_router.post("/findproduct", status_code= 200, response_model = List[ResponseProduct])
+async def find_product(data: ProductRequest):
     """
     Docstring for find_product
     
@@ -189,7 +189,7 @@ async def find_product(data:ProductRequest):
 
         p_ids=data.p_id
         
-        object_ids = [ObjectId(id) for id in p_ids]
+        object_ids = [ ObjectId(id) for id in p_ids]
         print(object_ids)
         product_id = list(db.products.find({"_id":{"$in":object_ids}}))
 
@@ -217,23 +217,34 @@ async def find_product(data:ProductRequest):
         raise HTTPException(status_code=500, detail=f"server Error {str(e)}")
     
 
+class user_feedback(BaseModel):
+
+    message:str
 
 
-@product_router.post("/feedback",status_code=200)
-async def feedback_form(current_user:dict=Depends(get_current_user)):
+@product_router.post("/feedback", status_code=200)
+async def feedback_form(request: user_feedback, current_user: dict = Depends(get_current_user)):        
     """Submit a user feedback"""
-    try:
-        id=current_user.get("id")
-        user_find= db.users.find_one({"_id":ObjectId(id)},{"password":0})
 
+    try:
+        # print(message)
+        id=current_user.get("id")
+        user_find= db.users.find_one({"_id": ObjectId(id)}, {"password":0})
+        
         if not user_find:
-            raise HTTPException(status_code=404,detail="User not found")
+            raise HTTPException(status_code=404, detail=" User not found")
+        
+        result = db.users.update_one(
+            {"_id": ObjectId (id)},
+            {"$push": {"feedback":request.message}}     #create a new array inside the list particular fields
+        )
 
         #store a message for the order user
         return JSONResponse(
             status_code=200,
-             content={"message":"Thank You Submit Your Feedback"},
+        content={"message":"Thank You Submit Your Feedback"},
         )
+        
            
     except HTTPException as e:
         raise HTTPException(status_code=500,detail=f"Internal server error {str(e)}")

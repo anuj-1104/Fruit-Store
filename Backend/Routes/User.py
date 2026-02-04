@@ -31,9 +31,9 @@ async def register_user(user: UserCreate):
 
     exist_user = db.users.find_one({"email": user.email})
     if exist_user:
-        raise HTTPException(status_code=401, detail="User already exists")
+        return HTTPException(status_code=401, detail="User already exists")
 
-    user_doc = user.model_dump()
+    user_doc = user.model_dump()        #convert in dict
     user_doc["password"] = hash_password(user_doc["password"])  #add a password a change hashpassword str
     user_doc["createdAt"] = datetime.now()
 
@@ -92,7 +92,7 @@ async def forget_password(data:ForgetPassword)->Any:
 
 # User Login - 
 @user_router.post("/login", response_model=LoginResponse ,status_code=200)
-async def login(form_data:LoginUser)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  // Annotated[OAuth2PasswordRequestForm,Depends()]
+async def login(form_data:UserCreate)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  // Annotated[OAuth2PasswordRequestForm,Depends()]
     """
     Docstring for login
     

@@ -48,7 +48,6 @@ const BuyProduct = () => {
         const response = await axios.post(`/product/findproduct`, {
           p_id: [id],
         });
-        // console.log(response.data[0]);
         if (response.request.status == 200) {
           setProduct(response.data[0]);
         }
@@ -149,29 +148,6 @@ const BuyProduct = () => {
                     <strike>₹{product.p_price}</strike>{" "}
                     <span className="text-sm ml-1">Tax included</span>
                   </p>
-                </div>
-                <div className="mt-8">
-                  <h3 className="text-xl font-bold text-white">
-                    Choose a Color
-                  </h3>
-                  <div className="flex flex-wrap gap-3 mt-4">
-                    <button
-                      type="button"
-                      className="w-10 h-10 cursor-pointer bg-black border-2 border-white hover:border-slate-800 rounded-full shrink-0 transition-all"
-                    />
-                    <button
-                      type="button"
-                      className="w-10 h-10 cursor-pointer bg-slate-700-300 border-2 border-white hover:border-slate-800 rounded-full shrink-0 transition-all"
-                    />
-                    <button
-                      type="button"
-                      className="w-10 h-10 cursor-pointer bg-slate-700-100 border-2 border-white hover:border-slate-800 rounded-full shrink-0 transition-all"
-                    />
-                    <button
-                      type="button"
-                      className="w-10 h-10 cursor-pointer bg-blue-400 border-2 border-white hover:border-slate-800 rounded-full shrink-0 transition-all"
-                    />
-                  </div>
                 </div>
                 <div className="flex gap-4 mt-12 max-w-md">
                   <button
@@ -376,9 +352,15 @@ const BuyProduct = () => {
                         onChange={handleInput}
                         className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
                       >
-                        <option className="bg-black" value="">Select Payment</option>
-                        <option className="bg-black" value="COD">Cash On Delivery</option>
-                        <option className="bg-black" value="ONLINE">Online Payement</option>
+                        <option className="bg-black" value="">
+                          Select Payment
+                        </option>
+                        <option className="bg-black" value="COD">
+                          Cash On Delivery
+                        </option>
+                        <option className="bg-black" value="ONLINE">
+                          Online Payement
+                        </option>
                       </select>
                     </div>
                     <div>

@@ -30,10 +30,10 @@ const Order = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get("/product/all/orders", {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+        const res = await axios.get("/product/all/orders",{
+          headers:{
+            'Authorization':`Bearer ${token}`
+          }
         });
 
         // console.log(res.data.orders);

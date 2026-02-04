@@ -10,6 +10,7 @@ const Feedback = () => {
     description: "",
   });
 
+  const { token } = useAppContext();
   // const { user, token } = useAppContext();
 
   //single render a set data one handller all data set
@@ -28,6 +29,7 @@ const Feedback = () => {
       const res = await axios.post(`/product/feedback`, {
         message: formdata.description,
       });
+      console.log(res);
 
       if (res.request.status === 200) {
         toast.success(res.data.message);

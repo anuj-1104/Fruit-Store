@@ -6,7 +6,7 @@ export default function Example() {
   const { navigate } = useAppContext();
 
   return (
-    <div className="flex flex-col bg-black items-center justify-center text-sm h-100vh border border-white rounded-lg p-6">
+    <div className="flex flex-col bg-black items-center justify-center text-sm h-100vh border p-6">
       <img
         src={image}
         alt="images Not Found"
@@ -19,17 +19,12 @@ export default function Example() {
       <div className="flex items-center gap-4 mt-6 ">
         <button
           type="button"
-          className="bg-indigo-500 hover:bg-indigo-600 px-7 py-2.5 text-white rounded active:scale-95 transition-all"
+          className="bg-indigo-500 hover:bg-indigo-600 px-7 py-2.5 text-white rounded flex items-center active:scale-95 transition-all"
           onClick={() => navigate("home")}
         >
           Go back home
         </button>
-        <button
-          type="button"
-          className="group flex items-center gap-2 px-7 py-2.5 active:scale-95 transition"
-        >
-          Contact support
-        </button>
+        
       </div>
     </div>
   );

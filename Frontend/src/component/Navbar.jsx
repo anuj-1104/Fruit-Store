@@ -11,6 +11,7 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const { Logout } = useAppContext();
   const [searchproduct, setSearchProduct] = useState("");
+  const [useropen, setUserOpen] = useState(false);
 
   useEffect(() => {
     setSearchQuery(searchproduct.toLowerCase());
@@ -83,16 +84,40 @@ const Navbar = () => {
             )}
           </div>
 
+          <div>
+            <button
+              onClick={() => setUserOpen(!useropen)}
+              className="bg-white w-10 h-10 rounded-full 
+             text-blue-500 font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
+            >
+              U
+            </button>
+
+            {useropen && (
+              <>
+                <div className="absolute  w-50 h-50 text-white  bg-gray-700 rounded-b-2xl p-2 ">
+                  <p className="text-center border-b-2  border-b-white">
+                    User Detail
+                  </p>
+                  <div className="m-2 ">
+                    <p className="">User Name :</p>
+                    <p className="">User Email :</p>
+                  </div>
+                </div>
+              </>
+            )}
+          </div>
+
           {user ? (
             <button
-              className="cursor-pointer px-6 py-2 bg-linear-to-r from-indigo-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              className="cursor-pointer px-6  py-2 bg-linear-to-r from-indigo-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               onClick={() => Logout()}
             >
               Logout
             </button>
           ) : (
             <button
-              className="cursor-pointer px-6 py-2 bg-linear-to-r from-indigo-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
+              className="cursor-pointer px-6 py-2 bg-linear-to-r  from-indigo-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 transition-all text-white rounded-full shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
               onClick={() => navigate("/")}
             >
               Login

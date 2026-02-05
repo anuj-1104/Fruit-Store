@@ -194,7 +194,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchProducts();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (searchQuery.length > 1) {

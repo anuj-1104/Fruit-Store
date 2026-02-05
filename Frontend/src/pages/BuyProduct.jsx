@@ -21,7 +21,8 @@ const BuyProduct = () => {
     payment: "",
     cvv_no: "",
   });
-  const { addToCart } = useAppContext();
+
+  const { addToCart, token } = useAppContext();
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -45,9 +46,17 @@ const BuyProduct = () => {
       if (!id) return;
 
       try {
-        const response = await axios.post(`/product/findproduct`, {
-          p_id: [id],
-        });
+        const response = await axios.post(
+          `/product/findproduct`,
+          {
+            p_id: [id],
+          },
+          {
+            headers: {
+              Authorization: `bearer ${token}`,
+            },
+          },
+        );
         if (response.request.status == 200) {
           setProduct(response.data[0]);
         }
@@ -61,14 +70,25 @@ const BuyProduct = () => {
 
   const handleProduct = async (e) => {
     e.preventDefault();
-    try {
-      const res = await axios.post(`/product/order/product`, {
-        p_items: [product], //pass a multiple fruits in one orderlist data
-        total_price: product.p_offerprice,
-        user: formdata,
-      });
 
-      // console.log(res);
+    if (!token) {
+      toast.error("Token not Found");
+      return;
+    }
+    try {
+      const res = await axios.post(
+        `/product/order/product`,
+        {
+          p_items: [product], //pass a multiple fruits in one orderlist data
+          total_price: product.p_offerprice,
+          user: formdata,
+        },
+        {
+          headers: {
+            Authorization: `bearer ${token}`,
+          },
+        },
+      );
 
       if (res.request.status === 200) {
         // console.log(res);
@@ -97,7 +117,12 @@ const BuyProduct = () => {
     setModel(false);
   };
 
-  if (!product) return <Loader />;
+  if (!product)
+    return (
+      <div className=" bg-black min-h-78   p-20  text-white justify-center items-center">
+        <Loader />
+      </div>
+    );
 
   return (
     <>
@@ -115,9 +140,9 @@ const BuyProduct = () => {
                   />
                   <button
                     type="button"
-                    className="absolute top-4 right-4 cursor-pointer"
+                    className="absolute top-4 right-4 group-hover:scale-95 transition-all cursor-pointer "
                   >
-                    <CiHeart className="text-white text-2xl hover:text-red-500" />{" "}
+                    <CiHeart className="text-white text-2xl transition-all hover:scale-[1.05]  duration-200 hover:text-red-500 " />{" "}
                   </button>
                 </div>
               </div>

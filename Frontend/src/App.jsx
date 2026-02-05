@@ -9,7 +9,7 @@ import Products from "./pages/Products";
 import NotFound from "./component/NotFound";
 import BuyProduct from "./pages/BuyProduct";
 import { ToastContainer } from "react-toastify";
-import Admincontrol from "./pages/Admincontrol";
+import Admincontrol from "./pages/Admin_Pages/Admincontrol";
 import Feedback from "./pages/Feedback";
 import { useAppContext } from "./context/Appcontext";
 import Order from "./pages/Order";
@@ -36,6 +36,7 @@ const App = () => {
           <Route path="/order" element={<Order />}></Route>
           <Route path="/fruites/cart-items" element={<Cart_page />}></Route>
         </Route>
+
         <Route path="/admin/page" element={<Admincontrol />} />
 
         <Route path="*" element={<NotFound />} />

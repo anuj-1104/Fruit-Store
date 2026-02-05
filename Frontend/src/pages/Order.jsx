@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../api/axios";
 import { useAppContext } from "../context/Appcontext";
 import { toast } from "react-toastify";
+import Loader from "../component/Loading/Loading";
 
 const Order = () => {
   const { token } = useAppContext();
@@ -30,10 +31,10 @@ const Order = () => {
       try {
         setLoading(true);
         setError(null);
-        const res = await axios.get("/product/all/orders",{
-          headers:{
-            'Authorization':`Bearer ${token}`
-          }
+        const res = await axios.get("/product/all/orders", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         });
 
         // console.log(res.data.orders);
@@ -122,16 +123,8 @@ const Order = () => {
           </div>
         ))
       ) : (
-        <div className="empty-state bg-black text-white justify-center items-center">
-          <h3 className="text-white text-2xl animate-pulse text-center transform hover:-translate-z-8 p-5 ">
-            No orders yet !
-          </h3>
-          <p className="text-white text-2xl text-center hover:-translate-y-1 animate-pulse duration-300 p-5 ">
-            Loading...
-          </p>
-          <p className="text-white text-2xl animate-pulse text-center hover:-translate-y-1 duration-300 p-5 ">
-            Orders will appear here when placed.
-          </p>
+        <div className=" bg-black min-h-43.5 m-5 text-white justify-center items-center">
+          <Loader />
         </div>
       )}
     </div>

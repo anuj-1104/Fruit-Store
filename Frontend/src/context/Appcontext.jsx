@@ -17,6 +17,7 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterproduct, setFilterProduct] = useState([]);
+  const [admin, setAdmin] = useState(null);
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }) => {
     }
   }, [total_count]);
 
+  //role based login
   const loginUser = async (userData) => {
     try {
       const response = await axios.post("/user/login", {
@@ -64,6 +66,14 @@ export const AuthProvider = ({ children }) => {
       if (response.request.status === 200) {
         const token = response.data.access_token;
         const jsonData = JSON.stringify(response.data.user);
+
+        if (response.data.role === "Admin") {
+          setAdmin(response.data.user);
+          localStorage.setItem("admin-token", token);
+          localStorage.setItem("admin-info", jsonData);
+          navigate("/admin/page");
+          return;
+        }
 
         // Save token
         localStorage.setItem("token", token);
@@ -155,7 +165,7 @@ export const AuthProvider = ({ children }) => {
         // console.log(response);
       }
     } catch (error) {
-      setError("user not Registration..");
+      setError("Faild Registration.");
     } finally {
       setLoading(false);
     }
@@ -184,7 +194,7 @@ export const AuthProvider = ({ children }) => {
     };
 
     fetchProducts();
-  }, [token]);
+  }, []);
 
   useEffect(() => {
     if (searchQuery.length > 1) {

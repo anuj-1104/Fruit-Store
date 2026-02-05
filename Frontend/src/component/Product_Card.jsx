@@ -22,21 +22,22 @@ const Product_Card = ({ id, image, name, qty, price, offerprice }) => {
         onClick={(e) => handlerproduct(id)}
         className="card w-100 bg-gray-900 rounded-lg shadow-lg"
       >
-        <div className="card2 p-2 flex flex-col gap-1">
+        <div className="card2 p-1 flex flex-col gap-1">
           <img
             className="w-full h-32 object-center content-fit rounded-t-lg border border-white rounded-2xl"
             src={`${image}`}
             alt={name}
           />
-          <SiCodefresh className="text-white text-2xl absolute m-1" />
-          <p className="text-white text-lg font-semibold">{name}</p>
-          <p className="text-gray-300 ">Price: <span className="line-through">₹{price}
-            
-            </span></p>
-          <p className="text-gray-300">Qty: {qty}</p>
-          <p className="text-cyan-200 font-semibold">
-            Offer Price: ₹{offerprice}
-          </p>
+          <SiCodefresh className="text-white animate-pulse text-2xl absolute m-1" />
+          <div className="p-2">
+            <p className="text-white text-lg  font-semibold">{name}</p>
+            <p className="text-gray-300 ">
+              Price: <span className="line-through">₹{price}</span>
+            </p>
+            <p className="text-green-400 font-semibold">
+              Offer Price: ₹{offerprice}
+            </p>
+          </div>
         </div>
       </div>
     </StyledWrapper>

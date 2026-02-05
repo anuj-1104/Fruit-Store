@@ -11,7 +11,6 @@ const Feedback = () => {
   });
 
   const { token } = useAppContext();
-  // const { user, token } = useAppContext();
 
   //single render a set data one handller all data set
   const handlechange = (e) => {
@@ -26,10 +25,17 @@ const Feedback = () => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(`/product/feedback`, {
-        message: formdata.description,
-      });
-      console.log(res);
+      const res = await axios.post(
+        `/product/feedback`,
+        {
+          message: formdata.description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
 
       if (res.request.status === 200) {
         toast.success(res.data.message);

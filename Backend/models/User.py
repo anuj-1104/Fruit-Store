@@ -21,6 +21,7 @@ class UserResponse(BaseModel):
 class LoginResponse(BaseModel):
     access_token: str
     token_type: str
+    role:str
     user: User
 
 class LoginUser(BaseModel):

@@ -1,7 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 
-const Loader = () => {
+const Loader = ({ padding, margin }) => {
   return (
     <StyledWrapper>
       <div className="spinner center">
@@ -14,14 +14,12 @@ const Loader = () => {
 };
 
 const StyledWrapper = styled.div`
-  /* Full screen black background */
   width: 100vw;
-  height: 100vh;
   background-color: transparent;
-  position: fixed;
-  top: 10;
+  position: absolute;
+  top: 50;
   left: 0;
-  z-index: 9999;
+  z-index: 1;
 
   display: flex;
   align-items: center;
@@ -53,7 +51,7 @@ const StyledWrapper = styled.div`
       animation-delay: ${i * 0.083}s;
       transform: rotate(${i * 30}deg);
     }
-  `
+  `,
     )
     .join("")}
 

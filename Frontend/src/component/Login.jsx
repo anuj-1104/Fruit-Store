@@ -13,12 +13,12 @@ const Login = () => {
   useEffect(() => {
     AOS.init({
       duration: 1000,
-      once: false,
-      offset: 100,
+      once: true,
+      offset: 200,
     });
   }, []);
 
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -40,14 +40,13 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
-    setError("");
+    setError(null);
   };
 
   //dynamically check the email validation regex
   useEffect(() => {
     if (formData.email === "") return;
     const regex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
-
     setIsLoading(!regex.test(formData.email));
   }, [formData.email]);
 
@@ -86,7 +85,7 @@ const Login = () => {
           break;
       }
     } catch (error) {
-      setError(error.mmessage || "error..");
+      setError(error.message || "error..");
     } finally {
       setFormData({
         email: "",
@@ -117,11 +116,11 @@ const Login = () => {
   return (
     <div className="min-h-screen  flex items-center reltive justify-center-safe    sm:px-6 lg:px-8 bg-cover  bg-[url('https://i.ibb.co/DgHm84d2/Pngtree-fresh-hand-painted-blue-banner-on-1095971.jpg')]">
       <div
-        className="max-w-md w-full space-y-8 border-white border p-3 rounded-xl backdrop-blur-md bg-white/10 "
+        className="max-w-md w-full space-y-8 border-blue-500 border p-3 rounded-xl backdrop-blur-md bg-white/10 "
         data-aos="zoom-in"
       >
         <div>
-          <h2 className="mt-6 text-center text-3xl text-blue-600 font-extrabold ">
+          <h2 className="mt-6 text-center text-3xl text-blue-600 font-extrabold animate-bounce">
             {mode === "login" && "Sign in to your account"}
             {mode === "forget_password" && "Forget Your Password"}
             {mode === "register" && "Create a new account"}
@@ -184,6 +183,7 @@ const Login = () => {
                   placeholder="Enter your full name"
                 />
               </div>
+
               <div className="bg-sky-300  p-2 rounded-2xl">
                 <label
                   htmlFor="phone"
@@ -215,12 +215,13 @@ const Login = () => {
             <input
               id="username"
               name="email"
+              contextMenu="true"
               type="email"
               required
               value={formData.email}
               onChange={handleChange}
               className="mt-1 appearance-none  bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your username"
+              placeholder="user Id / Email"
             />
           </div>
 
@@ -240,7 +241,7 @@ const Login = () => {
               value={formData.password}
               onChange={handleChange}
               className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-              placeholder="Enter your password"
+              placeholder="•••••••••"
             />
           </div>
           {mode === "forget_password" && (
@@ -261,7 +262,7 @@ const Login = () => {
                   value={formData.confirm_pass}
                   onChange={handleChange}
                   className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
-                  placeholder="Enter your confirm_pass"
+                  placeholder="•••••••••"
                 />
               </div>
               <div className="">

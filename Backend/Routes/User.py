@@ -115,10 +115,12 @@ async def login(form_data:UserCreate)->dict:              #to handle a request f
         return LoginResponse(
             access_token=token,
             token_type="bearer",
+            role=user["role"],
             user=User(
                 email=user["email"],
                 name=user.get("name"),
                 phone=user.get("phone")
+
             )
         )
 

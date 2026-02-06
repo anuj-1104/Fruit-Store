@@ -18,7 +18,7 @@ const Login = () => {
     });
   }, []);
 
-  const [error, setError] = useState(null);
+  // const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
@@ -31,7 +31,8 @@ const Login = () => {
     phone: "",
   });
 
-  const { loginUser, registration_user, forgetpassword } = useAppContext();
+  const { loginUser, registration_user, forgetpassword, error } =
+    useAppContext();
 
   // Handle input changes
   const handleChange = (e) => {
@@ -40,8 +41,9 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
-    setError(null);
   };
+
+  // console.log(error);
 
   //dynamically check the email validation regex
   useEffect(() => {
@@ -63,14 +65,17 @@ const Login = () => {
 
           break;
         case "register":
-          await registration_user({
+          const response = await registration_user({
             email: formData.email,
             password: formData.password,
             phone: formData.phone,
             name: formData.name,
           });
-
-          setMode("login");
+          if (response !== 406) {
+            setMode("login");
+          } else {
+            toast.success("Registration Successfully .");
+          }
           break;
         case "forget_password":
           const res = await forgetpassword({
@@ -85,9 +90,11 @@ const Login = () => {
           break;
       }
     } catch (error) {
-      setError(error.message || "error..");
+      // setError(error.message || "error..");
+      console.log("error", error);
     } finally {
       setFormData({
+        name: "",
         email: "",
         password: "",
         phone: "",
@@ -194,7 +201,7 @@ const Login = () => {
                 <input
                   id="phone"
                   name="phone"
-                  type="text"
+                  type="number"
                   required={!isLogin}
                   value={formData.phone}
                   onChange={handleChange}
@@ -213,6 +220,7 @@ const Login = () => {
               Email Address
             </label>
             <input
+              autoFocus
               id="username"
               name="email"
               contextMenu="true"
@@ -266,12 +274,12 @@ const Login = () => {
                 />
               </div>
               <div className="">
-                <a
+                <Link
                   onClick={() => setMode("login")}
                   className="font-bold underline-offset-4 underline  cursor-pointer object-center mt-5 flex justify-center text-blue-600 hover:text-blue-500"
                 >
                   Back to login.{" "}
-                </a>
+                </Link>
               </div>
             </>
           )}

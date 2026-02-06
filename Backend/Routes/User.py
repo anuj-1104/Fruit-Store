@@ -23,7 +23,7 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # User Registration - 
-@user_router.post("/user", status_code=200, response_model=UserResponse)
+@user_router.post("/user", status_code=200)
 async def register_user(user: UserCreate):
     """
     Registers a user, hashes password, inserts to DB and returns user info.
@@ -31,7 +31,10 @@ async def register_user(user: UserCreate):
 
     exist_user = db.users.find_one({"email": user.email})
     if exist_user:
-        return HTTPException(status_code=401, detail="User already exists")
+       return JSONResponse(
+            status_code=status.HTTP_406_NOT_ACCEPTABLE,
+            content="Password Updated Successfully"
+        )
 
     user_doc = user.model_dump()        #convert in dict
     user_doc["password"] = hash_password(user_doc["password"])  #add a password a change hashpassword str

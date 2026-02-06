@@ -17,6 +17,8 @@ const Navbar = () => {
     setSearchQuery(searchproduct.toLowerCase());
   }, [searchproduct]);
 
+  // console.log(user);
+
   const cart_itmes = Object.keys(total_count).length; //return a any object length of the array of the store.
 
   return (
@@ -86,7 +88,7 @@ const Navbar = () => {
 
           <div>
             <button
-              onClick={() => setUserOpen(!useropen)}
+              onClick={() => setUserOpen((prev) => !prev)}
               className="bg-white w-10 h-10 rounded-full 
              text-blue-500 font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
             >
@@ -95,13 +97,22 @@ const Navbar = () => {
 
             {useropen && (
               <>
-                <div className="absolute  w-50 h-50 text-white  bg-gray-700 rounded-b-2xl p-2 ">
-                  <p className="text-center border-b-2  border-b-white">
+                <div className="absolute right-20 top-18 w-100 text-white   bg-gray-700 rounded-b-2xl p-2 ">
+                  <p className="text-center border-b-2 text-2xl  border-b-white">
                     User Detail
                   </p>
-                  <div className="m-2 ">
-                    <p className="">User Name :</p>
-                    <p className="">User Email :</p>
+                  <div className="p-2  rounded-2xl  m-2 bg-gray-600">
+                    <div className=" p-2 grid gird-cols-1 gap-3 ">
+                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
+                        User Name : {user.name}
+                      </p>
+                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
+                        User Email : {user.email}
+                      </p>
+                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
+                        User Number : {user.phone}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </>
@@ -172,7 +183,7 @@ const Navbar = () => {
             Feedback
           </Link>
 
-          <div className="flex items-center text-sm gap-2 border border-gray-500 px-3 py-2 rounded-full bg-gray-800 bg-opacity-50 mt-2">
+          <div className="flex items-center text-sm gap-2 border  px-3 py-2 rounded-full bg-gray-800 bg-opacity-50  focus:border-blue-400 focus:ring-5 focus:ring-blue-500/50 transition-all duration-300">
             <FiSearch className="text-gray-400" />
             <input
               className="w-full bg-transparent outline-none placeholder-gray-500 text-white"

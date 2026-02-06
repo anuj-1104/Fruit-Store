@@ -2,7 +2,9 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
 import { FaImages } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 import { FaPlus, FaHome, FaBox, FaUsers, FaChartBar } from "react-icons/fa";
+import { useAppContext } from "../../context/Appcontext";
 
 const Admincontrol = () => {
   const [error, setError] = useState(null);
@@ -16,6 +18,14 @@ const Admincontrol = () => {
     image: "",
     description: "",
   });
+
+  const logoutUser = () => {
+    alert("Are you sure logout ?");
+    localStorage.clear();
+    navigate("/");
+  };
+
+  const { navigate } = useAppContext();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -85,27 +95,27 @@ const Admincontrol = () => {
 
               {/* Center: Navigation */}
               <nav className="hidden md:flex items-center space-x-8">
-                <a
-                  href="#"
+                <Link
+                  to={"#"}
                   className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10"
                 >
                   <FaHome className="w-4 h-4" />
                   <span>Dashboard</span>
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to={"#"}
                   className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10"
                 >
                   <FaChartBar className="w-4 h-4" />
                   <span>Analytics</span>
-                </a>
-                <a
-                  href="#"
+                </Link>
+                <Link
+                  to={"#"}
                   className="flex items-center space-x-2 text-gray-300 hover:text-white transition-colors px-3 py-2 rounded-lg hover:bg-white/10"
                 >
                   <FaUsers className="w-4 h-4" />
                   <span>Customers</span>
-                </a>
+                </Link>
               </nav>
 
               {/* Right: Actions */}
@@ -116,6 +126,13 @@ const Admincontrol = () => {
                 <div className="w-8 h-8 bg-linear-to-r from-purple-500 to-pink-500 rounded-full shadow-lg flex items-center justify-center">
                   <span className="text-white font-semibold text-sm">AD</span>
                 </div>
+                <button
+                  onClick={logoutUser}
+                  className="text-black rounded-full active:bg-green-200 active:scale-[0.95] delay-150 duration-150 bg-amber-100 w-10 h-10"
+                  value="Logout"
+                >
+                  LO
+                </button>
               </div>
             </div>
           </div>

@@ -14,6 +14,7 @@ import Feedback from "./pages/Feedback";
 import { useAppContext } from "./context/Appcontext";
 import Order from "./pages/Order";
 import Cart_page from "./pages/Cart_page";
+import Admin_Protected from "./protected/Admin_Protected";
 
 const App = () => {
   const { token } = useAppContext();
@@ -28,6 +29,7 @@ const App = () => {
           element={token ? <Navigate to="/home" replace /> : <Login />}
         />
 
+        {/* User ProtectedRout */}
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
           <Route path="/fruites" element={<Products />} />
@@ -37,7 +39,10 @@ const App = () => {
           <Route path="/fruites/cart-items" element={<Cart_page />}></Route>
         </Route>
 
-        <Route path="/admin/page" element={<Admincontrol />} />
+        {/* Admin ProtectedRout */}
+        <Route element={<Admin_Protected />}>
+          <Route path="/admin/page" element={<Admincontrol />} />
+        </Route>
 
         <Route path="*" element={<NotFound />} />
       </Routes>

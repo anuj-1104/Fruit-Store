@@ -72,6 +72,7 @@ export const AuthProvider = ({ children }) => {
           localStorage.setItem("admin-token", token);
           localStorage.setItem("admin-info", jsonData);
           navigate("/admin/page");
+          setError(null);
           return;
         }
 
@@ -89,8 +90,10 @@ export const AuthProvider = ({ children }) => {
       }
     } catch (error) {
       console.error(error.response?.data?.message || "Login failed");
-      setError(error.response?.data?.message || "Invalid credentials");
+      setError("Invalid credentials");
       return false;
+    } finally {
+      console.log();
     }
   };
 
@@ -130,9 +133,11 @@ export const AuthProvider = ({ children }) => {
         console.log("Password frogated...");
         window.location.href = "/home";
         toast.success(response.data);
+        setError(null);
         return response.data;
       }
     } catch (error) {
+      setError(error);
       console.error("Error", error);
     }
   };
@@ -153,19 +158,22 @@ export const AuthProvider = ({ children }) => {
   //registration user
   const registration_user = async (userdata) => {
     try {
-      const response = axios.post("/user/user", {
+      const response = await axios.post("/user/user", {
         email: userdata.email,
         password: userdata.password,
         name: userdata.name,
         phone: userdata.phone,
       });
 
+
       if (response.request.status == 200) {
         console.log("user Registration Successfully..");
         // console.log(response);
       }
     } catch (error) {
-      setError("Faild Registration.");
+      
+      setError(error.message || "Faild Registration.");
+      return error.status;
     } finally {
       setLoading(false);
     }
@@ -181,7 +189,7 @@ export const AuthProvider = ({ children }) => {
 
         // console.log(res);
         if (res.status === 200) {
-          setData(res.data || []); //not a error
+          setData(res.data || []);
           setError(null);
           setFilterProduct(res.data || []);
         }
@@ -190,11 +198,12 @@ export const AuthProvider = ({ children }) => {
         toast.error(error.message);
       } finally {
         setLoading(false);
+        setError(null);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [token]);
 
   useEffect(() => {
     if (searchQuery.length > 1) {
@@ -220,6 +229,7 @@ export const AuthProvider = ({ children }) => {
     setSearchQuery,
     registration_user,
     token,
+    admin,
     Logout,
     navigate,
     forgetpassword,

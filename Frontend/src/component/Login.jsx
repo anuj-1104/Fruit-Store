@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useAppContext } from "../context/Appcontext";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
+import { Link } from "react-router-dom";
 import AOS from "aos";
 import "aos/dist/aos.css";
 

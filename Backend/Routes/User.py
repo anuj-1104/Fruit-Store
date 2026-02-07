@@ -70,7 +70,7 @@ async def forget_password(data:ForgetPassword)->Any:
         
 
         if not verify_password(data.password, db_user.get("password")):    #check a password a match or not 
-            raise HTTPException(status_code=401, detail="Invalid email or password")
+            raise HTTPException(status_code=404, detail="password incorrect")
 
         hashed_password=hash_password(data.confirm_pass)
         
@@ -94,8 +94,8 @@ async def forget_password(data:ForgetPassword)->Any:
 
 
 # User Login - 
-@user_router.post("/login", response_model=LoginResponse ,status_code=200)
-async def login(form_data:UserCreate)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  // Annotated[OAuth2PasswordRequestForm,Depends()]
+@user_router.post("/login", response_model=LoginResponse, status_code=200)
+async def login(form_data:LoginUser)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  // Annotated[OAuth2PasswordRequestForm,Depends()]
     """
     Docstring for login
     
@@ -108,6 +108,8 @@ async def login(form_data:UserCreate)->dict:              #to handle a request f
             raise HTTPException(status_code=401, detail="Invalid email or password")
         
         # Verify password
+
+        # print(verify_password(form_data.password, user.get("password")))
         if not verify_password(form_data.password, user.get("password")):
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email or password")
         

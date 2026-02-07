@@ -37,7 +37,7 @@ export const AuthProvider = ({ children }) => {
         setTotalCount(JSON.parse(savedCart)); //converted a string data
       }
     } catch (error) {
-      console.log("Error:");
+      setLoading(true);
     }
   }, []);
 
@@ -89,11 +89,8 @@ export const AuthProvider = ({ children }) => {
         return true;
       }
     } catch (error) {
-      console.error(error.response?.data?.message || "Login failed");
       setError("Invalid credentials");
       return false;
-    } finally {
-      console.log();
     }
   };
 
@@ -130,15 +127,13 @@ export const AuthProvider = ({ children }) => {
       });
 
       if (response.request.status === 200) {
-        console.log("Password frogated...");
         window.location.href = "/home";
         toast.success(response.data);
         setError(null);
         return response.data;
       }
     } catch (error) {
-      setError(error);
-      console.error("Error", error);
+      setError(error?.response?.data?.detail);
     }
   };
 
@@ -147,11 +142,10 @@ export const AuthProvider = ({ children }) => {
     try {
       localStorage.clear(); //clear a localstorage
       localStorage.removeItem("UserData");
-      console.log("Logout Successfully ");
       window.location.href = "/"; //directly redict used browser
       setUser(null);
     } catch (error) {
-      console.error(error || "Data Not Erased");
+      setError(null);
     }
   };
 
@@ -165,13 +159,10 @@ export const AuthProvider = ({ children }) => {
         phone: userdata.phone,
       });
 
-
       if (response.request.status == 200) {
-        console.log("user Registration Successfully..");
-        // console.log(response);
+        setError(null);
       }
     } catch (error) {
-      
       setError(error.message || "Faild Registration.");
       return error.status;
     } finally {
@@ -187,7 +178,6 @@ export const AuthProvider = ({ children }) => {
       try {
         const res = await axios.get("/product/products");
 
-        // console.log(res);
         if (res.status === 200) {
           setData(res.data || []);
           setError(null);

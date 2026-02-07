@@ -10,7 +10,8 @@ const Order = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [search, setSearch] = useState("");
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(null);
+  const [userview, setUserView] = useState(null);
 
   //find the orders search query
   const handleSearch = (e) => {
@@ -24,6 +25,10 @@ const Order = () => {
 
     setFilteredData(result);
   };
+
+  useEffect(() => {
+    setUserView(null);
+  }, [filteredData]);
 
   useEffect(() => {
     const fetchOrders = async () => {
@@ -60,12 +65,12 @@ const Order = () => {
     };
 
     if (token) fetchOrders(); //check the token present or not
-  }, []);
+  }, [token]);
 
   return (
     <div className="orders-container bg-black text-white p-3  ">
       <div className="p-4 flex justify-between">
-        <h2>Recent Orders (Total: {filteredData.length})</h2>
+        {/* <h2>Recent Orders (Total: {filteredData.length})</h2> */}
         <input
           type="text"
           name="search"
@@ -76,7 +81,7 @@ const Order = () => {
           className="bg-black w-full rounded-3xl border-white border  text-start p-2 md:w-min"
         />
       </div>
-      {filteredData.length > 0 ? (
+      {filteredData ? (
         filteredData.map((orderItem, index) => (
           <div
             key={orderItem.created_At || index}
@@ -93,18 +98,31 @@ const Order = () => {
                 Date: {new Date(orderItem.created_At).toLocaleString()}
               </p>
             </div>
-            <ul className="items-list bg-black/20 grid grid-cols-2  rounded-2xl p-2 m-0  ">
-              <li className="bg-blue-900 p-3 rounded-2xl ">
-                <p className="text-center mb-4">Customer Detail</p>
-                <p>Customer Name: {orderItem.user?.user_name}</p>
-                <p>Customer Phone: {orderItem.user?.phone}</p>
-                <p>Customer Card Number: {orderItem.user?.cardnumber}</p>
-                <p>Payment Type:{orderItem.user?.payment}</p>
-              </li>
+            <ul
+              className={`items-list bg-black/20 auto   rounded-2xl p-2 m-0  grid  ${userview ? "grid-cols-1" : "grid-cols-2"} `}
+            >
+              <button
+                className="bg-black w-10 h-10 m-3 rounded-full"
+                onClick={() =>
+                  setUserView((prev) => (prev === index ? null : index))
+                }
+              >
+                U
+              </button>
+              {userview === index && (
+                <li className="bg-blue-900 p-3 w-full   rounded-2xl ">
+                  <p className="text-center mb-4">Customer Detail</p>
+                  <p>Customer Name: {orderItem.user?.user_name}</p>
+                  <p>Customer Phone: {orderItem.user?.phone}</p>
+                  <p>Customer Card Number: {orderItem.user?.cardnumber}</p>
+                  <p>Payment Type:{orderItem.user?.payment}</p>
+                </li>
+              )}
+
               {orderItem.p_items?.map((item, i) => (
                 <li
                   key={item.p_id || i}
-                  className="order-item  p-1 grid grid-cols-3 "
+                  className={` grid text-center  ${userview === i ? "grid-cols-3 pt-2" : "grid-cols-3"} `}
                 >
                   <span>{item.p_name}</span>
                   {item.p_offerprice && item.p_offerprice < item.p_price && (
@@ -113,7 +131,7 @@ const Order = () => {
                     </span>
                   )}
                   <img
-                    className="w-30  bg-black/30 rounded-2xl"
+                    className="w-30  bg-black/30 rounded-2xl hover:scale-[1.05] duration-300"
                     src={item?.image_url}
                     alt={item?.p_name}
                   />

@@ -277,7 +277,8 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
         data_dict = data.model_dump()
         data_dict["user_id"] = str(user_data["_id"])        
         data_dict["created_At"] = datetime.utcnow().isoformat() + "Z"
-        
+   
+            
         product_object_ids = []
         for item in data.p_items:
             try:
@@ -326,18 +327,32 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
                 }
             )
         
+
         order_data = db.purchases.insert_one(data_dict)
-        # print(f"order_data:{order_data}")
+        #handle a payment online and offline
+        try:
+                data=db.purchases.find_one({"_id":ObjectId(order_data.inserted_id)})
+                if not data:
+                    raise Exception("Error Not found id..")
+                
+                if data["user"]["payment"] == "COD":
+                    data["online_payment"]=None
+                else:
+                    data["online_payment"]="pending"
+                
+                db.purchases.update_one({'_id':ObjectId(data["_id"])},{"$set":{"online_payment":data["online_payment"]}})
+
+        except Exception as e:
+            raise HTTPException(status_code=404,detail="Id not found")
+            
         return {
             "status": "success", 
             "message": "Order created successfully", 
-            "order_id": str(order_data.inserted_id)
+            "order_id": str(order_data.inserted_id),
         }
         
-    except HTTPException:
-        raise HTTPException(detail="error")
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Internal server error {str(e)}")
+        raise HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=f"Internal server error {str(e)}")
 
 
 #-----all user orders-----------

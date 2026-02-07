@@ -32,11 +32,11 @@ const App = () => {
         {/* User ProtectedRout */}
         <Route element={<ProtectedRoute />}>
           <Route path="/home" element={<Home />} />
+          <Route path="/order" element={<Order />}></Route>
           <Route path="/fruites" element={<Products />} />
           <Route path="/fruites/:id" element={<BuyProduct />} />
-          <Route path="/feedback" element={<Feedback />}></Route>
-          <Route path="/order" element={<Order />}></Route>
           <Route path="/fruites/cart-items" element={<Cart_page />}></Route>
+          <Route path="/feedback" element={<Feedback />}></Route>
         </Route>
 
         {/* Admin ProtectedRout */}

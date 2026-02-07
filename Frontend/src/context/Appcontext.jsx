@@ -83,7 +83,7 @@ export const AuthProvider = ({ children }) => {
         // Decode token (NO SECRET) provide a directly use in the react
         const decodedUser = jwtDecode(token);
 
-        setUser(response);
+        setUser(response.data.user.name);
 
         navigate("/home", { replace: true });
         return true;

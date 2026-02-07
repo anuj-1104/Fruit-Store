@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useEffectEvent } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "../context/Appcontext";
 import { Link } from "react-router-dom";
 import { CiApple } from "react-icons/ci";
@@ -7,17 +7,15 @@ import { TiThMenu } from "react-icons/ti";
 import { FiSearch } from "react-icons/fi";
 
 const Navbar = () => {
-  const { user, navigate, total_count, setSearchQuery } = useAppContext();
+  const { navigate, total_count, setSearchQuery, Logout } = useAppContext();
   const [open, setOpen] = useState(false);
-  const { Logout } = useAppContext();
   const [searchproduct, setSearchProduct] = useState("");
   const [useropen, setUserOpen] = useState(false);
+  const user = JSON.parse(localStorage.getItem("UserData"));
 
   useEffect(() => {
     setSearchQuery(searchproduct.toLowerCase());
   }, [searchproduct]);
-
-  // console.log(user);
 
   const cart_itmes = Object.keys(total_count).length; //return a any object length of the array of the store.
 
@@ -44,7 +42,7 @@ const Navbar = () => {
           </Link>
           <Link
             className="hover:text-cyan-400 duration-200 hover:-translate-y-1 transition-all"
-            to={"/Fruites"}
+            to={"/fruites"}
           >
             Fruits
           </Link>
@@ -80,7 +78,10 @@ const Navbar = () => {
               onClick={() => navigate("/fruites/cart-items")}
             />
             {cart_itmes > 0 && (
-              <span className="absolute -top-2 -right-3 text-xs text-white bg-linear-to-r from-cyan-500 to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg">
+              <span
+                className="absolute -top-2 -right-3 text-xs text-white bg-gradient-to-r from-cyan-500 to-blue-500
+to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg"
+              >
                 {cart_itmes}
               </span>
             )}
@@ -97,12 +98,12 @@ const Navbar = () => {
 
             {useropen && (
               <>
-                <div className="absolute right-20 top-18 w-100 text-white   bg-gray-700 rounded-b-2xl p-2 ">
+                <div className="absolute right-4 top-12 w-64 bg-gray-700 rounded-lg shadow-xl p-2 ">
                   <p className="text-center border-b-2 text-2xl  border-b-white">
                     User Detail
                   </p>
                   <div className="p-2  rounded-2xl  m-2 bg-gray-600">
-                    <div className=" p-2 grid gird-cols-1 gap-3 ">
+                    <div className=" p-2 grid grid-cols-1 gap-3 ">
                       <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
                         User Name : {user.name}
                       </p>
@@ -160,7 +161,7 @@ const Navbar = () => {
             Home
           </Link>
           <Link
-            to={"/Fruites"}
+            to={"/fruites"}
             className="text-white py-2 px-4 rounded-md hover:bg-gray-800 transition-colors"
             onClick={() => setOpen(false)}
           >
@@ -207,6 +208,38 @@ const Navbar = () => {
                 <span className="absolute -top-2 -right-3 text-xs text-white bg-linear-to-r from-cyan-500 to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg">
                   {cart_itmes}
                 </span>
+              )}
+            </div>
+            <div>
+              <button
+                onClick={() => setUserOpen((prev) => !prev)}
+                className="bg-white w-10 h-10 rounded-full 
+             text-blue-500 font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
+              >
+                U
+              </button>
+
+              {useropen && (
+                <>
+                  <div className="absolute right-4 top-12 w-64 bg-gray-700 rounded-lg shadow-xl p-2 ">
+                    <p className="text-center border-b-2 text-2xl text-white  border-b-white">
+                      User Detail
+                    </p>
+                    <div className="p-2  rounded-2xl  m-2 bg-gray-600">
+                      <div className=" p-2 grid grid-cols-1 gap-3 ">
+                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
+                          User Name : {user.name}
+                        </p>
+                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
+                          User Email : {user.email}
+                        </p>
+                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
+                          User Number : {user.phone}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </>
               )}
             </div>
 

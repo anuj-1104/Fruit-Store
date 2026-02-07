@@ -34,7 +34,7 @@ const Order = () => {
     const fetchOrders = async () => {
       if (!token) return;
       try {
-        setLoading(true);
+        setLoading(true); 
         setError(null);
         const res = await axios.get("/product/all/orders", {
           headers: {

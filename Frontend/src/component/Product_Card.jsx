@@ -10,7 +10,7 @@ const Product_Card = ({ id, image, name, qty, price, offerprice }) => {
 
   const handlerproduct = async (id) => {
     try {
-      navigate(`/Fruites/${id}`);
+      navigate(`/fruites/${id}`);
     } catch (error) {
       console.log("Error: ");
     }

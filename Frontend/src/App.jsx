@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./component/Login";
@@ -15,9 +15,20 @@ import { useAppContext } from "./context/Appcontext";
 import Order from "./pages/Order";
 import Cart_page from "./pages/Cart_page";
 import Admin_Protected from "./protected/Admin_Protected";
+import AOS from "aos";
+import "aos/dist/aos.css";
 
 const App = () => {
   const { token } = useAppContext();
+
+  //initialize AOS nimation
+  useEffect(() => {
+    AOS.init({
+      duration: 2000,
+      once: false,
+      offset: 200,
+    });
+  }, []);
 
   return (
     <div className="">

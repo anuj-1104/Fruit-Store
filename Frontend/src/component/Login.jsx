@@ -3,28 +3,14 @@ import { useAppContext } from "../context/Appcontext";
 import { FcGoogle } from "react-icons/fc";
 import { toast } from "react-toastify";
 import { Link } from "react-router-dom";
-import AOS from "aos";
-import "aos/dist/aos.css";
 
 const Login = () => {
   // State to toggle between Login and Register forms
 
-  //initialize AOS nimation
-
-  useEffect(() => {
-    AOS.init({
-      duration: 1000,
-      once: true,
-      offset: 200,
-    });
-  }, []);
-
-  // const [error, setError] = useState(null);
   const [isLogin, setIsLogin] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
   const [mode, setMode] = useState("login");
-  // State for form data
   const [formData, setFormData] = useState({
     name: "", // Only used for registration
     email: "",
@@ -43,8 +29,6 @@ const Login = () => {
       [name]: value,
     }));
   };
-
-  // console.log(error);
 
   //dynamically check the email validation regex
   useEffect(() => {
@@ -91,8 +75,7 @@ const Login = () => {
           break;
       }
     } catch (error) {
-      // setError(error.message || "error..");
-      console.log("error", error);
+      setError(error.message || "error..");
     } finally {
       setFormData({
         name: "",
@@ -102,22 +85,6 @@ const Login = () => {
         age: "",
         confirm_pass: "",
       });
-
-      // console.log("Try again");
-    }
-  };
-
-  // Handle Google login
-  const handleGoogleLogin = async () => {
-    setError("");
-    setIsGoogleLoading(true);
-    try {
-      // await loginWithGoogle();     create a login with google functionality
-      toast.error("404: Unauthorized User");
-    } catch (err) {
-      setError(err.message || "Failed to login with Google.");
-    } finally {
-      setIsGoogleLoading(false);
     }
   };
 
@@ -137,7 +104,7 @@ const Login = () => {
             {mode === "login" ? "Or" : "Already have an account?"}{" "}
             <button
               type="button"
-              className=" underline-offset-4 underline font-bold  text-blue-600 hover:text-blue-500"
+              className=" underline-offset-4  underline font-bold  text-blue-600 hover:text-blue-500"
               onClick={() => setMode(mode === "login" ? "register" : "login")}
             >
               {mode === "login" ? "Sign up now" : "Sign in"}
@@ -149,7 +116,6 @@ const Login = () => {
         <div className="mt-6">
           <button
             type="button"
-            onClick={handleGoogleLogin}
             disabled={isGoogleLoading}
             className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
@@ -302,17 +268,17 @@ const Login = () => {
               disabled={isLoading}
               className="group relative duration-200 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-sky-400 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? "Loading . . ." : isLogin ? "Sign in" : "Sign up"}
+              {isLoading ? "Enter Email-Id" : isLogin ? "Sign in" : "Sign up"}
             </button>
 
-            {isLogin && (
+            {mode === "login" && (
               <button
                 type="button"
                 id="forget_password"
                 onClick={() => setMode("forget_password")}
-                className="mt-5 font-bold underline underline-offset-4 text-blue-600 hover:text-blue-500 transition"
+                className="mt-5 font-bold underline underline-offset-5 text-blue-600 hover:text-blue-500 transition"
               >
-                Forget password?
+                Forget password ?
               </button>
             )}
           </div>

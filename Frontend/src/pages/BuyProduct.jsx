@@ -262,7 +262,7 @@ const BuyProduct = () => {
         <>
           {/* Blur Background Overlay */}
           <div
-            className="fixed inset-0  bg-opacity-50 backdrop-blur-sm z-40 flex items-center justify-center p-4"
+            className="fixed inset-0  bg-opacity-20 backdrop-blur-md   z-40 flex items-center justify-center p-4"
             onClick={closeModal}
           />
 

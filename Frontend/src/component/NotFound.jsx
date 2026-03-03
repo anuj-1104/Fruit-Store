@@ -19,7 +19,7 @@ export default function Example() {
       <div className="flex items-center gap-4 mt-6 ">
         <button
           type="button"
-          className="bg-indigo-500 hover:bg-indigo-600 px-7 py-2.5 text-white rounded flex items-center active:scale-95 transition-all"
+          className="bg-blue-500 hover:bg-blue-600 px-7 py-2.5 text-white rounded flex items-center active:scale-95 transition-all"
           onClick={() => navigate("home")}
         >
           Go back home

@@ -11,7 +11,7 @@ class UserCreate(BaseModel):
     password: str=Field(description="Enter a password",examples=["12345678"])
     name: Optional[str] = None
     phone: Optional[str] = None
-    feedback:List[str]=None
+    feedback:List[str]
     role:str=Field(examples=["admin"],default="user")
 
 class UserResponse(BaseModel):

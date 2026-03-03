@@ -8,12 +8,12 @@ const Products = () => {
 
   return (
     <>
-      <div className="bg-black  col-span-full select-none p-4 ">
+      <div className="bg-black min-h-screen   col-span-full select-none p-1 ">
         <p className="text-white text-2xl font-semibold  text-center  ">
           All Fruites & Vegetables
         </p>
 
-        <div className=" m-2 grid grid-cols-2 md:grid-cols-6 mt-5 md:ml-5 sm:grid-cols-5 gap-6 justify-center">
+        <div className="relative gap-1 grid grid-cols-2  md:grid-cols-6 mt-5 md:ml-5 sm:grid-cols-5">
           {data.length > 0 ? (
             data.map(
               (

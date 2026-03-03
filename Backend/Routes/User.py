@@ -45,7 +45,7 @@ async def register_user(user: UserCreate):
 
     return UserResponse(
         token_type="bearer",
-        user=User(  # Use User pydentic
+        user=User(  
             email=user.email,
             name=user.name,
             phone=user.phone
@@ -109,13 +109,11 @@ async def login(form_data:LoginUser)->dict:              #to handle a request fo
         
         # Verify password
 
-        # print(verify_password(form_data.password, user.get("password")))
-        if not verify_password(form_data.password, user.get("password")):
+        if not verify_password(form_data.password, user.get("password")): 
             raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Invalid email or password")
         
         # Create JWT token
         token = create_access_token(data={"sub": str(user["_id"])})
-        # print(token)
         
         return LoginResponse(
             access_token=token,

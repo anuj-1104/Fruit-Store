@@ -1,10 +1,10 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useAppContext } from "../context/Appcontext";
 import axios from "../api/axios";
 import { toast } from "react-toastify";
 
 const Feedback = () => {
-  const user_data = JSON.parse(localStorage.getItem("UserData"));
+  const user_data = JSON.parse(localStorage.getItem("UserData")); //json to convert object
   const [formdata, setFormdata] = useState({
     name: user_data.email,
     description: "",
@@ -26,7 +26,7 @@ const Feedback = () => {
 
     try {
       const res = await axios.post(
-        `/product/feedback`,
+        "/product/feedback",
         {
           message: formdata.description,
         },
@@ -39,10 +39,6 @@ const Feedback = () => {
 
       if (res.request.status === 200) {
         toast.success(res.data.message);
-        setFormdata({
-          name: "",
-          description: "",
-        });
       }
     } catch (error) {
       toast.error(error);
@@ -97,6 +93,7 @@ const Feedback = () => {
               <textarea
                 id="description"
                 name="description"
+                autoFocus
                 rows={5}
                 value={formdata.description}
                 onChange={handlechange}

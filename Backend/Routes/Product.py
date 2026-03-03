@@ -106,10 +106,8 @@ async def create_product(
             "id": str(result.inserted_id)
         }
     except HTTPException as e:
-        print(f"Error:{e}")
         raise HTTPException(status_code=401,detail=f"Data not Add {e}")
     except Exception as e:
-        print(f"Error: {str(e)}")
         raise HTTPException(status_code=500, detail="Failed to add product")
 
 
@@ -190,10 +188,8 @@ async def find_product(data: ProductRequest):
         p_ids=data.p_id
         
         object_ids = [ ObjectId(id) for id in p_ids]
-        print(object_ids)
         product_id = list(db.products.find({"_id":{"$in":object_ids}}))
 
-        # print(product_id[0])     
         #fined the id for the all data are responsed the front end .saturday
 
         if not product_id:
@@ -213,7 +209,6 @@ async def find_product(data: ProductRequest):
         ]
     
     except Exception as e:
-        print(str(e))
         raise HTTPException(status_code=500, detail=f"server Error {str(e)}")
     
 
@@ -227,7 +222,6 @@ async def feedback_form(request: user_feedback, current_user: dict = Depends(get
     """Submit a user feedback"""
 
     try:
-        # print(message)
         id=current_user.get("id")
         user_find= db.users.find_one({"_id": ObjectId(id)}, {"password":0})
         
@@ -236,7 +230,7 @@ async def feedback_form(request: user_feedback, current_user: dict = Depends(get
         
         result = db.users.update_one(
             {"_id": ObjectId (id)},
-            {"$push": {"feedback":request.message}}     #create a new array inside the list particular fields
+            {"$push": {"feedback": request.message}}     #create a new array inside the list particular fields
         )
 
         #store a message for the order user
@@ -271,7 +265,6 @@ async def orderProduct(data: Ordernew, current_user: dict = Depends(get_current_
         if not user_data:
             raise HTTPException(status_code=404, detail="User not found")
         
-        # print(f"data: {data}")        check the data dummy 
 
         #addd the particular login user id and datetime
         data_dict = data.model_dump()
@@ -368,7 +361,6 @@ async def getallorder(currnt_user:Any=Depends(get_current_user)):      #secure r
         
         #new Orderfirst
         all_orders= list(db.purchases.find({"user_id":str(user_id)}).sort("created_At",-1))     #exclude a order id  order last is first used a sort method
-        # print(all_orders)
 
         #to seprate a all order id convert in string object id not a passed
         for order in all_orders:

@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useAppContext } from "../context/Appcontext";
 import { SiCodefresh } from "react-icons/si";
+// import AOS from "aos";
+// import "aos/dist/aos.css";
 
 const Product_Card = ({ id, image, name, qty, price, offerprice }) => {
   const { navigate } = useAppContext();
@@ -19,8 +21,9 @@ const Product_Card = ({ id, image, name, qty, price, offerprice }) => {
   return (
     <StyledWrapper>
       <div
+        data-aos="zoom-in"
         onClick={(e) => handlerproduct(id)}
-        className="card w-100 bg-gray-900 rounded-lg shadow-lg"
+        className="card w-100  bg-gray-900 rounded-lg shadow-lg"
       >
         <div className="card2 p-1 flex flex-col gap-1">
           <img

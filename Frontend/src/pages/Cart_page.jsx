@@ -7,8 +7,20 @@ const CartPage = () => {
   const [cartproduct, setCartProduct] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddress, setShowAddress] = React.useState(false);
+  const [formdata, setFormData] = useState({
+    name: "",
+    phone: "",
+    address: "",
+    cardNumber: "",
+    cvv: "",
+    qty: "",
+    paymentType: "",
+  });
+
   const { removeToCart, navigate, total_count } = useAppContext();
   const id = Object.keys(total_count); //convert a object type to find a length
+
+  const localstoragedata = JSON.parse(localStorage.getItem("cartItems"));
 
   useEffect(() => {
     const fetchCartData = async () => {
@@ -47,6 +59,28 @@ const CartPage = () => {
     removeToCart(p_id);
   };
 
+  const Inputhandller = (e) => {
+    const { name, value } = e.target;
+
+    setFormData((pre) => ({
+      ...pre,
+      [name]: value,
+    }));
+  };
+
+  const handleOrder = async () => {
+    try {
+      const response = await axios.get("");
+
+      if (response.status === 200) {
+        console.log();
+        alert("");
+      }
+    } catch (error) {
+      console.log(error.response);
+    }
+  };
+
   return (
     <div className="flex flex-col md:flex-row py-16  max-w-8xl   place-content-center w-full gap-10 px-6 mx-auto bg-black">
       <div className="flex-1 max-w-4xl border border-white rounded-2xl p-3   ">
@@ -81,25 +115,20 @@ const CartPage = () => {
                       {product.p_name}
                     </p>
                     <div className="font-normal text-gray-500/70">
-                      <p>
-                        Size: <span>{product.size || "N/A"}</span>
-                      </p>
                       <div className="flex items-center">
                         <p>Qty:</p>
+
                         <select className="outline-none">
-                          {Array(5)
-                            .fill("")
-                            .map((_, index) => (
-                              <option key={index} value={index + 1}>
-                                {index + 1}
-                              </option>
-                            ))}
+                          <option>{localstoragedata[product.p_id]}</option>
                         </select>
                       </div>
                     </div>
                   </div>
                 </div>
-                <p className="text-center">₹{product.p_offerprice}</p>
+                <p className="text-center">
+                  {/*  Access a product id key to handle a price*/}₹
+                  {product.p_offerprice * localstoragedata[product.p_id]}
+                </p>
                 <button
                   value={product._id}
                   className="cursor-pointer mx-auto"
@@ -138,7 +167,7 @@ const CartPage = () => {
           >
             <path
               d="M14.09 5.5H1M6.143 10 1 5.5 6.143 1"
-              stroke="#615fff"
+              stroke="#fff"
               strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
@@ -188,7 +217,13 @@ const CartPage = () => {
             Payment Method
           </p>
 
-          <select className="w-full border rounded-2xl border-gray-300 bg-white px-3 py-2 mt-2 outline-none">
+          <select
+            name="paymentType"
+            value={formdata.paymentType}
+            onChange={Inputhandller}
+            className="w-full  border text-center rounded-2xl border-gray-300 bg-white p-2  mt-2 outline-none"
+          >
+            <option>Select Payment Option</option>
             <option value="COD">Cash On Delivery</option>
             <option value="Online">Online Payment</option>
           </select>
@@ -199,7 +234,7 @@ const CartPage = () => {
         <div className="text-white mt-4 space-y-2">
           <p className="flex justify-between">
             <span>Price</span>
-            <span>$20</span>
+            <span>₹{23}</span>
           </p>
           <p className="flex justify-between">
             <span>Shipping Fee</span>
@@ -207,17 +242,18 @@ const CartPage = () => {
           </p>
           <p className="flex justify-between">
             <span>Tax (2%)</span>
-            <span>$20</span>
+            <span>₹20</span>
           </p>
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
-            <span>$20</span>
+            <span>₹20</span>
           </p>
         </div>
 
         <button
           disabled={id.length === 0}
-          className={`w-full rounded-2xl  py-3 mt-6  cursor-pointer disabled:cursor-not-allowed disabled:opacity-50  bg-indigo-500 text-white font-medium hover:bg-indigo-600 transition`}
+          onClick={() => handleOrder()}
+          className={`w-full rounded-2xl py-3 mt-6 active:scale-[0.95] duration-200  cursor-pointer disabled:cursor-not-allowed disabled:opacity-50  bg-teal-600 text-white font-medium hover:bg-teal-700 transition`}
         >
           {id.length > 0 ? "Place Order" : "Add Cart Items"}
         </button>

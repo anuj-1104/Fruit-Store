@@ -63,13 +63,12 @@ async def get_current_user(token: str = Depends(oauth2_scheme)) -> dict:        
 
         return{
             "id":user_id,
-            "role":user_doc.get("role","user"),     #pass a role of the user  get(key,value)
+            "role":user_doc.get("role","user"),     #pass a role of the user  get(key,value) 
         } 
        
     except JWTError as e:
         raise HTTPException(status_code=403, detail=f"Invalid token: {str(e)}")
-    except ValueError as e:
-        raise ValueError()
+    
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Authentication error {str(e)}")   
     

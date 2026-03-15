@@ -83,7 +83,7 @@ const Order = () => {
         />
       </div>
 
-      {filteredData ? (
+      {filteredData.length > 0 ? (
         filteredData.map((orderItem, index) => (
           <div
             key={orderItem.created_At || index}

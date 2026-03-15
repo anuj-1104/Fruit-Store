@@ -9,7 +9,7 @@ import { useAppContext } from "../../context/Appcontext";
 const Admincontrol = () => {
   const [error, setError] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
-  const [formData, setFormdata] = useState({
+  const [formdata, setFormdata] = useState({
     p_id: "",
     p_name: "",
     p_offerprice: "",
@@ -18,6 +18,8 @@ const Admincontrol = () => {
     image: "",
     description: "",
   });
+
+  const token = localStorage.getItem("admin-token")
 
   const logoutUser = () => {
     alert("Are you sure logout ?");
@@ -46,7 +48,7 @@ const Admincontrol = () => {
     e.preventDefault();
     try {
       const response = await axios.post("product/add", formdata, {
-        headers: {
+        headers: {                                       
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
@@ -60,8 +62,10 @@ const Admincontrol = () => {
           p_offerprice: "",
           p_price: "",
           p_qty: "",
+          image:"",
           description: "",
         });
+        setError(""); 
         toast.success(`${response.data.message}`);
       }
     } catch (error) {
@@ -164,7 +168,7 @@ const Admincontrol = () => {
                       Product ID
                     </label>
                     <input
-                      value={formData.p_id}
+                      value={formdata.p_id}
                       name="p_id"
                       type="number"
                       onChange={handleChange}
@@ -178,7 +182,7 @@ const Admincontrol = () => {
                       Product Name
                     </label>
                     <input
-                      value={formData.p_name}
+                      value={formdata.p_name}
                       name="p_name"
                       type="text"
                       onChange={handleChange}
@@ -196,7 +200,7 @@ const Admincontrol = () => {
                       Price (₹)
                     </label>
                     <input
-                      value={formData.p_price}
+                      value={formdata.p_price}
                       name="p_price"
                       type="number"
                       step="0.01"
@@ -211,7 +215,7 @@ const Admincontrol = () => {
                       Offer Price (₹)
                     </label>
                     <input
-                      value={formData.p_offerprice}
+                      value={formdata.p_offerprice}
                       name="p_offerprice"
                       type="number"
                       step="0.01"
@@ -230,7 +234,7 @@ const Admincontrol = () => {
                       Quantity
                     </label>
                     <input
-                      value={formData.p_qty}
+                      value={formdata.p_qty}
                       name="p_qty"
                       type="number"
                       min={1}
@@ -247,7 +251,7 @@ const Admincontrol = () => {
                     </label>
                     <textarea
                       name="description"
-                      value={formData.description}
+                      value={formdata.description}
                       onChange={handleChange}
                       rows={4}
                       className="w-full px-5 py-4 border border-gray-200 rounded-3xl focus:ring-4 focus:ring-emerald-500/20 focus:border-emerald-500 transition-all duration-300 resize-vertical bg-white/70 hover:bg-white shadow-lg hover:shadow-xl"

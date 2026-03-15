@@ -27,6 +27,7 @@ const App = () => {
       duration: 2000,
       once: false,
       offset: 200,
+      easing: "ease-out-back",
     });
   }, []);
 

@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
   const [filterproduct, setFilterProduct] = useState([]);
-  const [admin, setAdmin] = useState(null);
+  const [admin, setAdmin] = useState(null);4
+  const currency=import.meta.env.VITE_CURRENCY;
 
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
@@ -227,6 +228,7 @@ export const AuthProvider = ({ children }) => {
     removeToCart,
     addToCart,
     total_count,
+    currency
   };
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

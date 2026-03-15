@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import axios from "../api/axios";
 import { useAppContext } from "../context/Appcontext";
+import Loader from "../component/Loading/Loading";
 
 const CartPage = () => {
   const [cartproduct, setCartProduct] = useState([]);
@@ -16,6 +17,8 @@ const CartPage = () => {
     qty: "",
     paymentType: "",
   });
+
+  console.log(formdata);
 
   const { removeToCart, navigate, total_count } = useAppContext();
   const id = Object.keys(total_count); //convert a object type to find a length
@@ -48,6 +51,19 @@ const CartPage = () => {
 
     fetchCartData();
   }, [total_count]);
+
+  //Buy Product handller .
+  const BuyProduct = async () => {
+    try {
+      const response = await axios.get("");
+
+      if (response.status === 200) {
+        console.log(response);
+      }
+    } catch (error) {
+      console.warn(`Error : ${error.response}`);
+    }
+  };
 
   //removed from cartitems
   const carthandller = (p_id) => {
@@ -95,63 +111,67 @@ const CartPage = () => {
           <p className="text-center">Action</p>
         </div>
 
-        {loading
-          ? "Loading"
-          : cartproduct.map((product, index) => (
-              <div
-                key={index}
-                className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
-              >
-                <div className="flex items-center md:gap-6 gap-3">
-                  <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
-                    <img
-                      className="max-w-full h-full object-cover"
-                      src={product.image_url}
-                      alt={product.p_name}
-                    />
-                  </div>
-                  <div>
-                    <p className="hidden md:block font-semibold text-white">
-                      {product.p_name}
-                    </p>
-                    <div className="font-normal text-gray-500/70">
-                      <div className="flex items-center">
-                        <p>Qty:</p>
+        {loading ? (
+          <div>
+            <Loader />
+          </div>
+        ) : (
+          cartproduct.map((product, index) => (
+            <div
+              key={index}
+              className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
+            >
+              <div className="flex items-center md:gap-6 gap-3">
+                <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
+                  <img
+                    className="max-w-full h-full object-cover"
+                    src={product.image_url}
+                    alt={product.p_name}
+                  />
+                </div>
+                <div>
+                  <p className="hidden md:block font-semibold text-white">
+                    {product.p_name}
+                  </p>
+                  <div className="font-normal text-gray-500/70">
+                    <div className="flex items-center">
+                      <p>Qty:</p>
 
-                        <select className="outline-none">
-                          <option>{localstoragedata[product.p_id]}</option>
-                        </select>
-                      </div>
+                      <select className="outline-none">
+                        <option>{localstoragedata[product.p_id]}</option>
+                      </select>
                     </div>
                   </div>
                 </div>
-                <p className="text-center">
-                  {/*  Access a product id key to handle a price*/}₹
-                  {product.p_offerprice * localstoragedata[product.p_id]}
-                </p>
-                <button
-                  value={product._id}
-                  className="cursor-pointer mx-auto"
-                  onClick={() => carthandller(product.p_id)}
-                >
-                  <svg
-                    width="20"
-                    height="20"
-                    viewBox="0 0 20 20"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="m12.5 7.5-5 5m0-5 5 5m5.833-2.5a8.333 8.333 0 1 1-16.667 0 8.333 8.333 0 0 1 16.667 0"
-                      stroke="#FF532E"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </button>
               </div>
-            ))}
+              <p className="text-center">
+                {/*  Access a product id key to handle a price*/}₹
+                {product.p_offerprice * localstoragedata[product.p_id]}
+              </p>
+              <button
+                value={product._id}
+                className="cursor-pointer mx-auto"
+                onClick={() => carthandller(product.p_id)}
+              >
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="m12.5 7.5-5 5m0-5 5 5m5.833-2.5a8.333 8.333 0 1 1-16.667 0 8.333 8.333 0 0 1 16.667 0"
+                    stroke="#FF532E"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          ))
+        )}
 
         <button
           className="group cursor-pointer flex text-white items-center mt-8 gap-2   font-medium"
@@ -188,7 +208,7 @@ const CartPage = () => {
             Delivery Address
           </p>
           <div className="relative flex justify-between items-start mt-2">
-            <p className="text-gray-500">No address found</p>
+            <p className="text-gray-500">{formdata.address}</p>
             <button
               onClick={() => setShowAddress(!showAddress)}
               className="text-white hover:underline cursor-pointer"
@@ -197,18 +217,20 @@ const CartPage = () => {
             </button>
             {showAddress && (
               <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                <p
+                <input
+                  className="p-1 w-full rounded  "
+                  type="text"
+                  name="address"
+                  placeholder="Enter Your Address"
+                  value={formdata.address}
+                  onChange={Inputhandller}
+                />
+                <button
                   onClick={() => setShowAddress(false)}
-                  className="text-gray-500 p-2 hover:bg-gray-100"
-                >
-                  New York, USA
-                </p>
-                <p
-                  onClick={() => setShowAddress(false)}
-                  className="text-white text-center cursor-pointer p-2 hover:bg-indigo-500/10"
+                  className="text-black text-center w-full cursor-pointer p-2 duration-300 bg-indigo-500/30  hover:bg-indigo-500/40"
                 >
                   Add address
-                </p>
+                </button>
               </div>
             )}
           </div>
@@ -234,7 +256,7 @@ const CartPage = () => {
         <div className="text-white mt-4 space-y-2">
           <p className="flex justify-between">
             <span>Price</span>
-            <span>₹{23}</span>
+            <span>₹{3}</span>
           </p>
           <p className="flex justify-between">
             <span>Shipping Fee</span>

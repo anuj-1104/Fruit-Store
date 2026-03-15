@@ -106,7 +106,7 @@ const Footer = () => {
             <span className="text-gray-400">Powered by CodeFresh</span>
           </div>
           <p className="text-gray-400 text-center">
-            Copyright © {currentYear} Fruits-Store. All Rights Reserved.
+            Copyright © {currentYear} Green Store. All Rights Reserved.
           </p>
           <div className="flex items-center gap-6 text-sm">
             <Link

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-// import { SiCodefresh, SiFacebook, SiTwitter, SiInstagram, SiLinkedin } from "react-icons/si";
 import { toast } from "react-toastify";
 import { FaApple } from "react-icons/fa";
 

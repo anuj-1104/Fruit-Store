@@ -94,8 +94,8 @@ const Login = () => {
         className="max-w-md w-full space-y-8 border-blue-500 border p-3 rounded-xl backdrop-blur-md bg-white/10 "
         data-aos="zoom-in"
       >
-        <div>
-          <h2 className="mt-6 text-center text-3xl text-blue-600 font-extrabold animate-bounce">
+        <div data-aos="fade-up">
+          <h2 className="mt-6 text-center text-3xl text-blue-600 font-extrabold ">
             {mode === "login" && "Sign in to your account"}
             {mode === "forget_password" && "Forget Your Password"}
             {mode === "register" && "Create a new account"}
@@ -117,7 +117,7 @@ const Login = () => {
           <button
             type="button"
             disabled={isGoogleLoading}
-            className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="w-full flex justify-center items-center py-2 px-4 border border-gray-300 rounded-md shadow-sm bg-white text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <FcGoogle className="h-5 w-5 mr-2" />
             {isGoogleLoading ? "Processing..." : `Continue with Google`}
@@ -153,7 +153,7 @@ const Login = () => {
                   required={!isLogin}
                   value={formData.name}
                   onChange={handleChange}
-                  className="mt-1 appearance-none bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 appearance-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  focus:border-indigo-500 sm:text-sm"
                   placeholder="Enter your full name"
                 />
               </div>
@@ -172,7 +172,7 @@ const Login = () => {
                   required={!isLogin}
                   value={formData.phone}
                   onChange={handleChange}
-                  className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 appearance-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  focus:border-indigo-500 sm:text-sm"
                   placeholder="Enter your phone number"
                 />
               </div>
@@ -195,7 +195,7 @@ const Login = () => {
               required
               value={formData.email}
               onChange={handleChange}
-              className="mt-1 appearance-none  bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 appearance-none  focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 bg-white text-black block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  focus:border-indigo-500 sm:text-sm"
               placeholder="user Id / Email"
             />
           </div>
@@ -215,7 +215,7 @@ const Login = () => {
               minLength={6}
               value={formData.password}
               onChange={handleChange}
-              className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+              className="mt-1 appearance-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  focus:border-indigo-500 sm:text-sm"
               placeholder="•••••••••"
             />
           </div>
@@ -236,7 +236,7 @@ const Login = () => {
                   minLength={6}
                   value={formData.confirm_pass}
                   onChange={handleChange}
-                  className="mt-1 appearance-none text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                  className="mt-1 appearance-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 text-black bg-white block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none  focus:border-indigo-500 sm:text-sm"
                   placeholder="•••••••••"
                 />
               </div>
@@ -266,7 +266,7 @@ const Login = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="group relative duration-200 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-sky-400 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="group relative duration-200 w-full flex justify-center py-2 px-4 border border-transparent text-sm font-bold rounded-md text-white bg-sky-400 hover:bg-sky-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500  disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isLoading ? "Enter Email-Id" : isLogin ? "Sign in" : "Sign up"}
             </button>

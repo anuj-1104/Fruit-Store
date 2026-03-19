@@ -81,7 +81,7 @@ const Navbar = () => {
             />
             {cart_itmes > 0 && (
               <span
-                className="absolute -top-2 -right-3 text-xs text-white bg-gradient-to-r from-cyan-500 to-blue-500
+                className="absolute -top-2 -right-3 text-xs text-white bg-linear-to-r from-cyan-500 
 to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse shadow-lg"
               >
                 {cart_itmes}
@@ -93,27 +93,30 @@ to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse 
             <button
               onClick={() => setUserOpen((prev) => !prev)}
               className="bg-white w-10 h-10 rounded-full 
-             text-blue-500 font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
+             text-blue-500 font-bold focus:outline-2 text-2xl justify-items-center-safe focus:outline-offset-2 focus:outline-white"
             >
-              U
+              {user.name.charAt().toUpperCase()}
             </button>
 
             {useropen && (
               <>
-                <div className="absolute right-4 top-12 w-64 bg-gray-700 rounded-lg shadow-xl p-2 ">
-                  <p className="text-center border-b-2 text-2xl  border-b-white">
-                    User Detail
-                  </p>
-                  <div className="p-2  rounded-2xl  m-2 bg-gray-600">
+                <div className="absolute border-white border-2 right-4 top-12 w-64 bg-gray-700  shadow-xl ">
+                  <button
+                    onClick={() => [navigate("/home"), setUserOpen(false)]}
+                    className="m-2 hover:-translate-x-1 transition-all duration-300"
+                  >
+                    <span className="text-white">⇠</span> Back
+                  </button>
+                  <div className="p-2  rounded-2xl  ">
                     <div className=" p-2 grid grid-cols-1 gap-3 ">
-                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
-                        User Name : {user.name}
+                      <p className=" hover:text-cyan-500   duration-200">
+                        Name : {user.name}
                       </p>
-                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
-                        User Email : {user.email}
+                      <p className=" hover:text-cyan-500   duration-200">
+                        Email : {user.email}
                       </p>
-                      <p className="hover:-translate-x-1 hover:text-cyan-500   duration-200">
-                        User Number : {user.phone}
+                      <p className=" hover:text-cyan-500   duration-200">
+                        Number : {user.phone}
                       </p>
                     </div>
                   </div>
@@ -216,30 +219,34 @@ to-blue-500 w-5 h-5 rounded-full flex items-center justify-center animate-pulse 
               <button
                 onClick={() => setUserOpen((prev) => !prev)}
                 className="bg-white w-10 h-10 rounded-full 
-             text-blue-500 font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
+             text-blue-500 text-2xl font-bold focus:outline-2 focus:outline-offset-2 focus:outline-white"
               >
-                U
+                {user.name.charAt().toUpperCase()}
               </button>
 
               {useropen && (
                 <>
-                  <div
-                    onClick={() => setUserOpen((prev) => !prev)}
-                    className="absolute right-4 top-12 w-64 bg-gray-700 rounded-lg shadow-xl p-2 "
-                  >
-                    <p className="text-center border-b-2 text-2xl text-white  border-b-white">
-                      User Detail
-                    </p>
-                    <div className="p-2  rounded-2xl  m-2 bg-gray-600">
+                  <div className="absolute border-white border-2 right-4 top-12 w-64 text-white bg-gray-700  shadow-xl ">
+                    <button
+                      onClick={() => [
+                        navigate("/home"),
+                        setUserOpen(false),
+                        setOpen(false),
+                      ]}
+                      className="m-2 hover:-translate-x-1 transition-all duration-300"
+                    >
+                      <span className="text-white">⇠</span> Back
+                    </button>
+                    <div className="p-2  rounded-2xl  ">
                       <div className=" p-2 grid grid-cols-1 gap-3 ">
-                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
-                          User Name : {user.name}
+                        <p className=" hover:text-cyan-500   duration-200">
+                          Name : {user.name}
                         </p>
-                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
-                          User Email : {user.email}
+                        <p className=" hover:text-cyan-500   duration-200">
+                          Email : {user.email}
                         </p>
-                        <p className="hover:-translate-x-1 text-white  hover:text-cyan-500   duration-200">
-                          User Number : {user.phone}
+                        <p className=" hover:text-cyan-500   duration-200">
+                          Number : {user.phone}
                         </p>
                       </div>
                     </div>

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { FaApple } from "react-icons/fa";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -10,7 +9,7 @@ const Footer = () => {
   const handleSubscribe = (e) => {
     e.preventDefault();
     if (!email) {
-      toast.error("Please enter your email address");
+      toast.error("Please enter your email");
       return;
     }
     toast.success("Thank you for subscribing!");
@@ -21,10 +20,10 @@ const Footer = () => {
     <div className="w-full bg-black text-white">
       <footer className="relative overflow-hidden px-6 md:px-16 lg:px-24 xl:px-32 w-full text-sm pt-12 pb-6">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
-          {/* Company Info */}
+          {/* Farm Info */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <h1 className="text-2xl font-bold">Fruits-Store</h1>
+              <h1 className="text-2xl font-bold">Green-Store</h1>
             </div>
             <p className="text-gray-300 leading-relaxed">
               Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio

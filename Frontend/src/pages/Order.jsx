@@ -113,13 +113,12 @@ const Order = () => {
               className={`items-list bg-black/20 auto rounded-2xl p-2 m-0  grid grid-cols-1 `}
             >
               <button
-                className="bg-black w-10 h-10 m-3 hover:scale-[1.05] duration-300 rounded-full"
+                className="bg-black w-10 text-2xl text-center justify-items-center-safe h-10  hover:scale-[1.05] duration-300 rounded-full"
                 onClick={() =>
                   setUserView((prev) => (prev === index ? null : index))
                 }
               >
                 {orderItem.user?.user_name.charAt()}{" "}
-                {/*  All Customer first latter show */}
               </button>
               {userview === index && (
                 <li

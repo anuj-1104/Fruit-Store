@@ -81,9 +81,6 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", token);
         localStorage.setItem("UserData", jsonData);
 
-        // Decode token (NO SECRET) provide a directly use in the react
-        const decodedUser = jwtDecode(token);
-
         setUser(response.data.user.name);
 
         navigate("/home", { replace: true });
@@ -153,6 +150,7 @@ export const AuthProvider = ({ children }) => {
   //registration user
   const registration_user = async (userdata) => {
     try {
+      console.log(userdata);
       const response = await axios.post("/user/user", {
         email: userdata.email,
         password: userdata.password,
@@ -160,11 +158,12 @@ export const AuthProvider = ({ children }) => {
         phone: userdata.phone,
       });
 
+
       if (response.request.status == 200) {
         setError(null);
       }
     } catch (error) {
-      setError(error.message || "Faild Registration.");
+      setError("Faild Registration.");
       return error.status;
     } finally {
       setLoading(false);

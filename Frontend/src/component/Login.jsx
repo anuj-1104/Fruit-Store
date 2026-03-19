@@ -58,8 +58,6 @@ const Login = () => {
           });
           if (response !== 406) {
             setMode("login");
-          } else {
-            toast.success("Registration Successfully .");
           }
           break;
         case "forget_password":

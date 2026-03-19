@@ -11,7 +11,11 @@ from fastapi import Depends,status
 from typing import Annotated,Any        #pass a argument of the datatype and description of type Annotated 
 from fastapi.responses import JSONResponse          
 from bson import ObjectId
+import smtplib as smtplib
 from models.User import UserCreate, LoginUser, LoginResponse, User
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import os
 
 load_dotenv()       #used to find a env variable
 
@@ -20,32 +24,89 @@ user_router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/api/user/login")
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+#Email Send Method
+
+sender_email = os.getenv("FROM")
+receiver_email = os.getenv("TO")     #Only One Person set not all 
+password = os.getenv("GOOGLE_APP_PASSWORD")
+
+def send_email(to_email, subject, body):
+    msg = MIMEMultipart()
+    msg["From"] = sender_email
+    msg["To"] = to_email
+    msg["Subject"] = subject
+
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        mailObj = smtplib.SMTP("smtp.gmail.com", 587)
+        mailObj.starttls()
+        mailObj.login(sender_email, password)
+        mailObj.sendmail(sender_email, to_email, msg.as_string())
+        mailObj.quit()
+    except Exception as e:
+        print("Email error:", e)
 
 
 # User Registration - 
 @user_router.post("/user", status_code=200)
 async def register_user(user: UserCreate):
-    """
-    Registers a user, hashes password, inserts to DB and returns user info.
-    """
 
-    exist_user = db.users.find_one({"email": user.email})
-    if exist_user:
-       return JSONResponse(
-            status_code=status.HTTP_406_NOT_ACCEPTABLE,
-            content="Password Updated Successfully"
+    if not user.email.endswith("@gmail.com"):
+        return JSONResponse(
+            status_code=400,
+            content="Only Gmail accounts are allowed"
         )
+    
+    exist_user = db.users.find_one({"email": user.email})
 
-    user_doc = user.model_dump()        #convert in dict
-    user_doc["password"] = hash_password(user_doc["password"])  #add a password a change hashpassword str
+    if exist_user:
+        subject = "Account Already Registered"
+        body = f"""
+Hi,
+
+Your account is already registered.
+
+Username: {user.email}
+
+Please login instead.
+
+Regards,
+Support Team
+"""
+
+        send_email(user.email, subject, body)
+
+        return JSONResponse(
+            status_code=406,
+            content="User Already Exists"
+        )
+    
+    user_doc = user.model_dump()
+    user_doc["password"] = hash_password(user_doc["password"])
     user_doc["createdAt"] = datetime.now()
 
-    # Insert user
     db.users.insert_one(user_doc)
+
+    subject = "Account Created Successfully"
+    body = f"""
+Hi,
+
+Your account has been created successfully.
+
+Username: {user.email}
+
+Please login securely.
+
+Regards,
+Support Team
+"""
+
+    send_email(user.email, subject, body)
 
     return UserResponse(
         token_type="bearer",
-        user=User(  
+        user=User(
             email=user.email,
             name=user.name,
             phone=user.phone
@@ -55,13 +116,8 @@ async def register_user(user: UserCreate):
 #--------ForgetPassword -------
 
 @user_router.post("/forget_pass",status_code=200)
-async def forget_password(data:ForgetPassword)->Any:
-    """
-    Docstring for forget_password
-    :param data: Description
-    :type data: ForgetPassword
-    :param current_user: Description
-    """
+async def forget_password(data:ForgetPassword)-> Any:
+
     try:
         db_user = db.users.find_one({"email":data.email})
 
@@ -95,13 +151,8 @@ async def forget_password(data:ForgetPassword)->Any:
 
 # User Login - 
 @user_router.post("/login", response_model=LoginResponse, status_code=200)
-async def login(form_data:LoginUser)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  // Annotated[OAuth2PasswordRequestForm,Depends()]
-    """
-    Docstring for login
-    
-    :param form_data: Description
-    :type form_data: LoginUser
-    """
+async def login(form_data:LoginUser)->dict:              #to handle a request for the depends on a OAuthrequest formdata accepts  #Annotated[OAuth2PasswordRequestForm,Depends()]
+
     try:
         user = db.users.find_one({"email":form_data.email})       
         if not user:
@@ -138,14 +189,7 @@ async def login(form_data:LoginUser)->dict:              #to handle a request fo
 
 @user_router.get("/profile", response_model=User,status_code=200)
 async def get_profile(current_user_id: str = Depends(get_current_user))->str:
-   """
-   Docstring for get_profile
-   
-   :param current_user_id: Description
-   :type current_user_id: str
-   :return: Description
-   :rtype: str
-   """
+
    try: 
 
     id=current_user_id.get("id")
@@ -164,5 +208,3 @@ async def get_profile(current_user_id: str = Depends(get_current_user))->str:
    
    except Exception as e:
     raise HTTPException(status_code=404, detail=f"User not found {str(e)}") 
-
-    

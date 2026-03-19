@@ -9,7 +9,7 @@ function Banner() {
     slidesToShow: 3,
     slidesToScroll: 1,
     autoplay: true,
-    speed: 55000,
+    speed: 5000,
     autoplaySpeed: 2000, //2 seconds
   };
 

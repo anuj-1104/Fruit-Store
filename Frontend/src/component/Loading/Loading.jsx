@@ -17,7 +17,7 @@ const StyledWrapper = styled.div`
   width: 100vw;
   background-color: transparent;
   position: absolute;
-  top: 50;
+  top: 60;
   left: 0;
   z-index: 1;
 

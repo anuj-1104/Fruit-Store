@@ -12,7 +12,9 @@ const BuyProduct = () => {
   const { id } = useParams(); //to used a path id traking to used a this hook
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isloading, setIsLoading] = useState(false);
   const [model, setModel] = useState(false); // Changed to false initially
+  const { addToCart, token } = useAppContext();
   const [formdata, setFormData] = useState({
     user_name: "",
     phone: "",
@@ -22,7 +24,16 @@ const BuyProduct = () => {
     cvv_no: "",
   });
 
-  const { addToCart, token } = useAppContext();
+  useEffect(() => {
+    const phone = formdata.phone?.trim();
+    if (phone && (phone.length < 10 || phone.length > 10)) {
+      setIsLoading(true);
+      console.log("Phone number must be exactly 10 digits.");
+    } else {
+      setIsLoading(false);
+    }
+  }, [formdata.phone]);
+
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -343,7 +354,7 @@ const BuyProduct = () => {
                       value={formdata.phone}
                       onChange={handleInput}
                       required
-                      className="w-full p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"
+                      className={`w-full p-3 bg-white/5 border  ${isloading ? "focus:border-red-500 focus:ring-2 focus:ring-red-500/50" : "focus:border-blue-500 focus:ring-2 focus:ring-blue-500/50"} border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none `}
                       placeholder="+91 12345 67890"
                     />
                   </div>
